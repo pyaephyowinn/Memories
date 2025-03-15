@@ -24,7 +24,6 @@ import {
   customerRegistrationSchema,
   CustomerRegistrationType,
 } from "@/lib/schemas";
-import prisma from "@/lib/prisma";
 import { createCustomer } from "@/app/services/user";
 
 export function CustomerRegistrationForm() {
