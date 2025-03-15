@@ -1,0 +1,136 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  username     String
+  email        String    @unique
+  password     String
+  phone        String
+  twoFAEnabled Boolean   @default(false)
+  role         String
+  owner        Owner?
+  customer     Customer?
+
+  InstallmentRecord InstallmentRecord[]
+  PaymentRecord     PaymentRecord[]
+}
+
+model Owner {
+  id             Int                @id @default(autoincrement())
+  businessName   String
+  taxInformation String
+  licenseNumber  String
+  userId         Int                @unique
+  user           User               @relation(fields: [userId], references: [id])
+  listings       Listing[]
+  commissions    CommissionRecord[]
+}
+
+model Customer {
+  id           Int             @id @default(autoincrement())
+  preferences  String?
+  userId       Int             @unique
+  user         User            @relation(fields: [userId], references: [id])
+  appointments Appointment[]
+  payments     PaymentRecord[]
+  SaleRecord   SaleRecord[]
+  RentalRecord RentalRecord[]
+}
+
+model Listing {
+  id                 Int                 @id @default(autoincrement())
+  title              String
+  description        String
+  location           String
+  price              Float
+  propertyType       String
+  size               Float
+  bedrooms           Int
+  bathrooms          Int
+  status             String
+  verificationStatus String
+  ownerId            Int
+  owner              Owner               @relation(fields: [ownerId], references: [id])
+  appointments       Appointment[]
+  saleRecord         SaleRecord?
+  rentalRecord       RentalRecord?
+  installments       InstallmentRecord[]
+  payments           PaymentRecord[]
+  commissions        CommissionRecord[]
+}
+
+model Appointment {
+  id         Int      @id @default(autoincrement())
+  dateTime   DateTime
+  status     String
+  customerId Int
+  customer   Customer @relation(fields: [customerId], references: [id])
+  listingId  Int
+  listing    Listing  @relation(fields: [listingId], references: [id])
+}
+
+model SaleRecord {
+  id        Int      @id @default(autoincrement())
+  salePrice Float
+  saleDate  DateTime
+  listingId Int      @unique
+  listing   Listing  @relation(fields: [listingId], references: [id])
+  buyerId   Int
+  buyer     Customer @relation(fields: [buyerId], references: [id])
+}
+
+model RentalRecord {
+  id             Int      @id @default(autoincrement())
+  rentalPrice    Float
+  leaseStartDate DateTime
+  leaseEndDate   DateTime
+  listingId      Int      @unique
+  listing        Listing  @relation(fields: [listingId], references: [id])
+  tenantId       Int
+  tenant         Customer @relation(fields: [tenantId], references: [id])
+}
+
+model InstallmentRecord {
+  id                Int       @id @default(autoincrement())
+  installmentAmount Float
+  dueDate           DateTime
+  paidDate          DateTime?
+  paymentStatus     String    @default("Pending")
+  paymentMethod     String?
+  lateFee           Float?    @default(0.0)
+  notes             String?
+  listingId         Int
+  listing           Listing   @relation(fields: [listingId], references: [id])
+  userId            Int
+  user              User      @relation(fields: [userId], references: [id])
+}
+
+model PaymentRecord {
+  id          Int       @id @default(autoincrement())
+  amount      Float
+  paymentDate DateTime
+  paymentType String
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  listingId   Int
+  listing     Listing   @relation(fields: [listingId], references: [id])
+  Customer    Customer? @relation(fields: [customerId], references: [id])
+  customerId  Int?
+}
+
+model CommissionRecord {
+  id               Int     @id @default(autoincrement())
+  commissionAmount Float
+  paymentStatus    String
+  listingId        Int
+  listing          Listing @relation(fields: [listingId], references: [id])
+  agentId          Int
+  agent            Owner   @relation(fields: [agentId], references: [id])
+}
