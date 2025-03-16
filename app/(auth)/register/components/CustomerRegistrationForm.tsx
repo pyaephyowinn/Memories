@@ -24,7 +24,8 @@ import {
   customerRegistrationSchema,
   CustomerRegistrationType,
 } from "@/lib/schemas";
-import { createCustomer } from "@/app/services/user";
+import { createCustomer } from "@/services/user";
+import { LoadingButton } from "@/components/ui/LoadingButton";
 
 export function CustomerRegistrationForm() {
   const form = useForm<CustomerRegistrationType>({
@@ -174,7 +175,13 @@ export function CustomerRegistrationForm() {
             />
           </CardContent>
           <CardFooter>
-            <Button className="w-full">Create Account</Button>
+            <LoadingButton
+              loading={form.formState.isSubmitting}
+              className="w-full"
+              loadingText="Creating"
+            >
+              Create Account
+            </LoadingButton>
           </CardFooter>
         </Card>
       </form>
