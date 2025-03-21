@@ -1,20 +1,21 @@
-import { Search } from "lucide-react"
-import Link from "next/link"
+import { Search } from "lucide-react";
+import Link from "next/link";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import PropertyCard from "@/components/property-card"
-import SearchFilters from "@/components/search-filters"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import PropertyCard from "@/components/property-card";
+import SearchFilters from "@/components/search-filters";
+import { SVGProps } from "react";
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="px-4 lg:px-6 h-14 flex items-center border-b">
+      <header className="px-4 lg:px-6 h-14 flex items-center border-b sticky top-0 z-50 bg-white">
         <Link className="flex items-center justify-center" href="/">
           <HomeIcon className="h-6 w-6" />
           <span className="ml-2 font-bold">Acme Real Estate</span>
         </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
+        <nav className="ml-auto flex items-center gap-4 sm:gap-6">
           <Link
             className="text-sm font-medium hover:underline underline-offset-4"
             href="/properties?status=available&type=buy"
@@ -27,16 +28,28 @@ export default function Home() {
           >
             Rent
           </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/sell">
+          <Link
+            className="text-sm font-medium hover:underline underline-offset-4"
+            href="/sell"
+          >
             Sell
           </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/about">
+          <Link
+            className="text-sm font-medium hover:underline underline-offset-4"
+            href="/about"
+          >
             About
           </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="/dashboard">
+          <Link
+            className="text-sm font-medium hover:underline underline-offset-4"
+            href="/dashboard"
+          >
             Dashboard
           </Link>
-          <Link className="text-sm font-medium text-primary hover:underline underline-offset-4" href="/login">
+          <Link
+            className="text-sm font-medium text-primary hover:underline underline-offset-4"
+            href="/login"
+          >
             Login
           </Link>
           <Link href="/register">
@@ -44,6 +57,7 @@ export default function Home() {
           </Link>
         </nav>
       </header>
+
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-black">
           <div className="container px-4 md:px-6">
@@ -53,8 +67,8 @@ export default function Home() {
                   Find Your Dream Home
                 </h1>
                 <p className="mx-auto max-w-[700px] text-gray-300 md:text-xl">
-                  Discover the perfect property for you. Whether you're looking to buy, rent, or sell, we've got you
-                  covered.
+                  Discover the perfect property for you. Whether you're looking
+                  to buy, rent, or sell, we've got you covered.
                 </p>
               </div>
               <div className="w-full max-w-3xl space-y-2">
@@ -78,7 +92,9 @@ export default function Home() {
         </section>
         <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100">
           <div className="container px-4 md:px-6">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8">Featured Listings</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8">
+              Featured Listings
+            </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               <PropertyCard
                 id="1"
@@ -138,7 +154,9 @@ export default function Home() {
         </section>
       </main>
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-        <p className="text-xs text-gray-500">© 2024 Acme Real Estate. All rights reserved.</p>
+        <p className="text-xs text-gray-500">
+          © 2024 Acme Real Estate. All rights reserved.
+        </p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
           <Link className="text-xs hover:underline underline-offset-4" href="#">
             Terms of Service
@@ -149,10 +167,10 @@ export default function Home() {
         </nav>
       </footer>
     </div>
-  )
+  );
 }
 
-function HomeIcon(props) {
+function HomeIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -169,6 +187,5 @@ function HomeIcon(props) {
       <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
       <polyline points="9 22 9 12 15 12 15 22" />
     </svg>
-  )
+  );
 }
-

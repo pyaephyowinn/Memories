@@ -43,7 +43,10 @@ export function CustomerRegistrationForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const onSubmit = async (data: CustomerRegistrationType) => {
-    const customer = await createCustomer(data);
+    const customer = await createCustomer({
+      ...data,
+      role: "customer",
+    });
     console.log(customer);
   };
 

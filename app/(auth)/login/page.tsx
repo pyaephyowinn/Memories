@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Eye, EyeOff, KeyRound, Smartphone } from "lucide-react";
-
+import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,12 +13,39 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useForm } from "react-hook-form";
+import { loginSchema, LoginType } from "@/lib/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { LoadingButton } from "@/components/ui/LoadingButton";
+import { login } from "@/services/user";
 
 export default function LoginPage() {
+  const form = useForm<LoginType>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
   const [showPassword, setShowPassword] = useState(false);
-  const [showTwoFactor, setShowTwoFactor] = useState(false);
+
+  const onSubmit = async (data: LoginType) => {
+    try {
+      const user = await login(data.email, data.password);
+      console.log(user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="container flex h-screen w-screen flex-col items-center justify-center">
@@ -33,135 +59,86 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {!showTwoFactor ? (
-          <Card>
-            <CardHeader>
-              <CardTitle>Sign In</CardTitle>
-              <CardDescription>
-                Enter your email and password to sign in
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="john.doe@example.com"
-                  required
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <Card>
+              <CardHeader>
+                <CardTitle>Sign In</CardTitle>
+                <CardDescription>
+                  Enter your email and password to sign in
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="john.doe@example.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Password</Label>
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            {...field}
+                          />
+
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="absolute right-0 top-0 h-full px-3 py-2"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            {showPassword ? (
+                              <EyeOff className="h-4 w-4" />
+                            ) : (
+                              <Eye className="h-4 w-4" />
+                            )}
+                            <span className="sr-only">
+                              {showPassword ? "Hide password" : "Show password"}
+                            </span>
+                          </Button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </CardContent>
+              <CardFooter className="flex flex-col space-y-4">
+                <LoadingButton
+                  loading={form.formState.isSubmitting}
+                  className="w-full"
+                  type="submit"
+                >
+                  Sign In
+                </LoadingButton>
+                <div className="text-center text-sm">
+                  Don't have an account?{" "}
                   <Link
-                    href="/forgot-password"
-                    className="text-xs text-primary hover:underline"
+                    href="/register"
+                    className="text-primary hover:underline"
                   >
-                    Forgot password?
+                    Sign up
                   </Link>
                 </div>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    required
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="absolute right-0 top-0 h-full px-3 py-2"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
-                    <span className="sr-only">
-                      {showPassword ? "Hide password" : "Show password"}
-                    </span>
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter className="flex flex-col space-y-4">
-              <Button className="w-full" onClick={() => setShowTwoFactor(true)}>
-                Sign In
-              </Button>
-              <div className="text-center text-sm">
-                Don't have an account?{" "}
-                <Link href="/register" className="text-primary hover:underline">
-                  Sign up
-                </Link>
-              </div>
-            </CardFooter>
-          </Card>
-        ) : (
-          <Card>
-            <CardHeader>
-              <CardTitle>Two-Factor Authentication</CardTitle>
-              <CardDescription>
-                Enter the verification code sent to your device
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Tabs defaultValue="app" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="app">
-                    <KeyRound className="h-4 w-4 mr-2" />
-                    Authenticator
-                  </TabsTrigger>
-                  <TabsTrigger value="sms">
-                    <Smartphone className="h-4 w-4 mr-2" />
-                    SMS
-                  </TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="app" className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="auth-code">Authentication Code</Label>
-                    <Input
-                      id="auth-code"
-                      placeholder="Enter 6-digit code"
-                      maxLength={6}
-                    />
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Open your authenticator app and enter the 6-digit code for
-                    Acme Real Estate.
-                  </p>
-                </TabsContent>
-
-                <TabsContent value="sms" className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="sms-code">SMS Code</Label>
-                    <Input
-                      id="sms-code"
-                      placeholder="Enter 6-digit code"
-                      maxLength={6}
-                    />
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    We've sent a verification code to your registered phone
-                    number. It will expire in 10 minutes.
-                  </p>
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-            <CardFooter className="flex flex-col space-y-4">
-              <Button className="w-full">Verify</Button>
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => setShowTwoFactor(false)}
-              >
-                Back to Login
-              </Button>
-            </CardFooter>
-          </Card>
-        )}
+              </CardFooter>
+            </Card>
+          </form>
+        </Form>
       </div>
     </div>
   );

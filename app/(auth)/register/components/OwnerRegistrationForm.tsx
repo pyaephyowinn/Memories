@@ -9,110 +9,196 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ownerRegistrationSchema, OwnerRegistrationType } from "@/lib/schemas";
+import { createCustomer } from "@/services/user";
+import { LoadingButton } from "@/components/ui/LoadingButton";
 
 export function OwnerRegistrationForm() {
+  const form = useForm<OwnerRegistrationType>({
+    resolver: zodResolver(ownerRegistrationSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+      phone: "",
+      username: "",
+    },
+  });
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const onSubmit = async (data: OwnerRegistrationType) => {
+    const customer = await createCustomer({
+      ...data,
+      role: "owner",
+    });
+    console.log(customer);
+  };
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Property Owner Registration</CardTitle>
-        <CardDescription>
-          Create an account to list and manage your properties
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="first-name-owner">First name</Label>
-            <Input id="first-name-owner" placeholder="John" required />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="last-name-owner">Last name</Label>
-            <Input id="last-name-owner" placeholder="Doe" required />
-          </div>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="email-owner">Email</Label>
-          <Input
-            id="email-owner"
-            type="email"
-            placeholder="john.doe@example.com"
-            required
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="phone-owner">Phone Number</Label>
-          <Input
-            id="phone-owner"
-            type="tel"
-            placeholder="+1 (555) 000-0000"
-            required
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="company">Company Name (Optional)</Label>
-          <Input id="company" placeholder="Acme Real Estate" />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="password-owner">Password</Label>
-          <div className="relative">
-            <Input
-              id="password-owner"
-              type={showPassword ? "text" : "password"}
-              required
-            />
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="absolute right-0 top-0 h-full px-3 py-2"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? (
-                <EyeOff className="h-4 w-4" />
-              ) : (
-                <Eye className="h-4 w-4" />
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <Card>
+          <CardHeader>
+            <CardTitle>Property Owner Registration</CardTitle>
+            <CardDescription>
+              Create an account to search and book property viewings
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input placeholder="John" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
-              <span className="sr-only">
-                {showPassword ? "Hide password" : "Show password"}
-              </span>
-            </Button>
-          </div>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="confirm-password-owner">Confirm Password</Label>
-          <div className="relative">
-            <Input
-              id="confirm-password-owner"
-              type={showConfirmPassword ? "text" : "password"}
-              required
             />
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="absolute right-0 top-0 h-full px-3 py-2"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            >
-              {showConfirmPassword ? (
-                <EyeOff className="h-4 w-4" />
-              ) : (
-                <Eye className="h-4 w-4" />
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="john.doe@example.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
-              <span className="sr-only">
-                {showConfirmPassword ? "Hide password" : "Show password"}
-              </span>
-            </Button>
-          </div>
-        </div>
-      </CardContent>
-      <CardFooter>
-        <Button className="w-full">Create Account</Button>
-      </CardFooter>
-    </Card>
+            />
+
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone Number</FormLabel>
+                  <FormControl>
+                    <Input placeholder="+1 (555) 000-0000" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="businessName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Business Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="My Business" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        type={showPassword ? "text" : "password"}
+                        {...field}
+                      />
+
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="absolute right-0 top-0 h-full px-3 py-2"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                        <span className="sr-only">
+                          {showPassword ? "Hide password" : "Show password"}
+                        </span>
+                      </Button>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm Password</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        type={showPassword ? "text" : "password"}
+                        {...field}
+                      />
+
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="absolute right-0 top-0 h-full px-3 py-2"
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                        <span className="sr-only">
+                          {showPassword ? "Hide password" : "Show password"}
+                        </span>
+                      </Button>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </CardContent>
+          <CardFooter>
+            <LoadingButton
+              loading={form.formState.isSubmitting}
+              className="w-full"
+              loadingText="Creating"
+            >
+              Create Account
+            </LoadingButton>
+          </CardFooter>
+        </Card>
+      </form>
+    </Form>
   );
 }
