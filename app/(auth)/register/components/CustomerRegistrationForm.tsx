@@ -26,6 +26,7 @@ import {
 } from "@/lib/schemas";
 import { createCustomer } from "@/services/user";
 import { LoadingButton } from "@/components/ui/LoadingButton";
+import { Roles } from "@/lib/configs";
 
 export function CustomerRegistrationForm() {
   const form = useForm<CustomerRegistrationType>({
@@ -43,11 +44,10 @@ export function CustomerRegistrationForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const onSubmit = async (data: CustomerRegistrationType) => {
-    const customer = await createCustomer({
+    await createCustomer({
       ...data,
-      role: "customer",
+      role: Roles.customer,
     });
-    console.log(customer);
   };
 
   return (

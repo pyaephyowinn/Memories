@@ -23,6 +23,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ownerRegistrationSchema, OwnerRegistrationType } from "@/lib/schemas";
 import { createCustomer } from "@/services/user";
 import { LoadingButton } from "@/components/ui/LoadingButton";
+import { Roles } from "@/lib/configs";
 
 export function OwnerRegistrationForm() {
   const form = useForm<OwnerRegistrationType>({
@@ -40,11 +41,10 @@ export function OwnerRegistrationForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const onSubmit = async (data: OwnerRegistrationType) => {
-    const customer = await createCustomer({
+    await createCustomer({
       ...data,
-      role: "owner",
+      role: Roles.owner,
     });
-    console.log(customer);
   };
 
   return (

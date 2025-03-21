@@ -1,14 +1,16 @@
 "use server";
 
+import { RoleType } from "@/lib/configs";
 import { saltAndHashPassword, verifyPassword } from "@/lib/password";
 import prisma from "@/lib/prisma";
 import { CustomerRegistrationType } from "@/lib/schemas";
+import { createSession } from "@/lib/session";
+import { redirect } from "next/navigation";
 
 export async function createCustomer(
-  data: CustomerRegistrationType & { role: string }
+  data: CustomerRegistrationType & { role: RoleType }
 ) {
   const hashedPassword = await saltAndHashPassword(data.password);
-
   const user = await prisma.user.create({
     data: {
       username: data.username,
@@ -18,11 +20,15 @@ export async function createCustomer(
       role: data.role,
     },
   });
-  return prisma.customer.create({
+
+  await prisma.customer.create({
     data: {
       userId: user.id,
     },
   });
+
+  createSession(user.id);
+  redirect("/profile");
 }
 
 export async function login(email: string, password: string) {
@@ -40,7 +46,6 @@ export async function login(email: string, password: string) {
     throw new Error("Invalid password");
   }
 
-  const { password: _, ...userWithoutPassword } = user;
-
-  return userWithoutPassword;
+  createSession(user.id);
+  redirect("/profile");
 }

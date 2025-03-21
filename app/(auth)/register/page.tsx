@@ -8,8 +8,8 @@ import { OwnerRegistrationForm } from "./components/OwnerRegistrationForm";
 
 export default function RegisterPage() {
   return (
-    <div className="container mx-auto py-8 flex flex-col items-center justify-center">
-      <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[450px]">
+    <div className="mx-auto w-[90%] md:w-full py-8 flex flex-col items-center justify-center">
+      <div className="mx-auto flex flex-col justify-center space-y-6 sm:w-[450px]">
         <div className="flex flex-col space-y-2 text-center">
           <h1 className="text-2xl font-semibold tracking-tight">
             Create an account

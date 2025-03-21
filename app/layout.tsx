@@ -4,8 +4,8 @@ import { Header } from "@/components/core/Header";
 import { Footer } from "@/components/core/Footer";
 
 export const metadata: Metadata = {
-  title: "v0 App",
-  description: "Created with v0",
+  title: "Memories",
+  description: "Memories - Real Estate Platform",
   generator: "v0.dev",
 };
 

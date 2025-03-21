@@ -39,12 +39,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (data: LoginType) => {
-    try {
-      const user = await login(data.email, data.password);
-      console.log(user);
-    } catch (error) {
-      console.log(error);
-    }
+    await login(data.email, data.password);
   };
 
   return (
