@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Header } from "@/components/core/Header";
 import { Footer } from "@/components/core/Footer";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Memories",
@@ -22,6 +23,7 @@ export default function RootLayout({
           {children}
           <Footer />
         </div>
+        <Toaster />
       </body>
     </html>
   );

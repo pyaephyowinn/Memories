@@ -37,7 +37,7 @@ export function Header() {
         </Link>
         <Link
           className="text-sm font-medium hover:underline underline-offset-4"
-          href="/dashboard"
+          href="/d"
         >
           Dashboard
         </Link>

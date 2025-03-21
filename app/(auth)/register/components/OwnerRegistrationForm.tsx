@@ -21,9 +21,10 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ownerRegistrationSchema, OwnerRegistrationType } from "@/lib/schemas";
-import { createCustomer } from "@/services/user";
+import { createOwner } from "@/services/user";
 import { LoadingButton } from "@/components/ui/LoadingButton";
 import { Roles } from "@/lib/configs";
+import Link from "next/link";
 
 export function OwnerRegistrationForm() {
   const form = useForm<OwnerRegistrationType>({
@@ -41,7 +42,7 @@ export function OwnerRegistrationForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const onSubmit = async (data: OwnerRegistrationType) => {
-    await createCustomer({
+    await createOwner({
       ...data,
       role: Roles.owner,
     });
@@ -188,7 +189,7 @@ export function OwnerRegistrationForm() {
               )}
             />
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex flex-col space-y-4">
             <LoadingButton
               loading={form.formState.isSubmitting}
               className="w-full"
@@ -196,6 +197,13 @@ export function OwnerRegistrationForm() {
             >
               Create Account
             </LoadingButton>
+
+            <div className="text-center text-sm">
+              Already have an account?{" "}
+              <Link href="/login" className="text-primary hover:underline">
+                Sign In
+              </Link>
+            </div>
           </CardFooter>
         </Card>
       </form>

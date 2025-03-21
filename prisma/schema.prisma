@@ -25,8 +25,8 @@ model User {
 model Owner {
   id             Int                @id @default(autoincrement())
   businessName   String
-  taxInformation String
-  licenseNumber  String
+  taxInformation String?
+  licenseNumber  String?
   userId         Int                @unique
   user           User               @relation(fields: [userId], references: [id])
   listings       Listing[]
@@ -48,15 +48,21 @@ model Listing {
   id                 Int                 @id @default(autoincrement())
   title              String
   description        String
-  location           String
+  streetAddress      String
+  city               String
+  state              String
   price              Float
+  zipCode            String
   propertyType       String
+  listingType        String
   size               Float
   bedrooms           Int
   bathrooms          Int
+  yearBuilt          Int
   status             String
   verificationStatus String
   ownerId            Int
+  images             String[]
   owner              Owner               @relation(fields: [ownerId], references: [id])
   appointments       Appointment[]
   saleRecord         SaleRecord?

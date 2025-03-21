@@ -27,6 +27,7 @@ import {
 import { createCustomer } from "@/services/user";
 import { LoadingButton } from "@/components/ui/LoadingButton";
 import { Roles } from "@/lib/configs";
+import Link from "next/link";
 
 export function CustomerRegistrationForm() {
   const form = useForm<CustomerRegistrationType>({
@@ -177,7 +178,7 @@ export function CustomerRegistrationForm() {
               )}
             />
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex flex-col gap-4">
             <LoadingButton
               loading={form.formState.isSubmitting}
               className="w-full"
@@ -185,6 +186,12 @@ export function CustomerRegistrationForm() {
             >
               Create Account
             </LoadingButton>
+            <div className="text-center text-sm">
+              Already have an account?{" "}
+              <Link href="/login" className="text-primary hover:underline">
+                Sign In
+              </Link>
+            </div>
           </CardFooter>
         </Card>
       </form>
