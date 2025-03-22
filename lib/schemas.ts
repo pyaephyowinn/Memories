@@ -60,3 +60,6 @@ export const propertySchema = z.object({
 });
 
 export type PropertyType = z.infer<typeof propertySchema>;
+export type PropertyDetailType = PropertyType & {
+  id: number;
+};

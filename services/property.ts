@@ -31,3 +31,20 @@ export async function createProperty(property: PropertyType) {
 
   redirect("/d");
 }
+
+export function getPropertyById(id: number) {
+  return prisma.listing.findUnique({
+    where: {
+      id,
+    },
+  });
+}
+
+export async function updateProperty(id: number, data: PropertyType) {
+  return prisma.listing.update({
+    where: {
+      id,
+    },
+    data,
+  });
+}

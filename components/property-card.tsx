@@ -1,22 +1,30 @@
-import { Bed, Bath, Move, MapPin, Calendar } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
+"use client";
 
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { Bed, Bath, Move, MapPin, Calendar } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 interface PropertyCardProps {
-  id: string
-  imageUrl: string
-  title: string
-  price: string
-  beds: number
-  baths: number
-  sqft: number
-  status: "available" | "sold" | "rented"
-  type: "buy" | "rent"
-  location: string
+  id: string;
+  imageUrl: string;
+  title: string;
+  price: string;
+  beds: number;
+  baths: number;
+  sqft: number;
+  status: "available" | "sold" | "rented";
+  type: "buy" | "rent";
+  location: string;
 }
 
 export default function PropertyCard({
@@ -45,7 +53,13 @@ export default function PropertyCard({
         </Link>
         <Badge
           className="absolute top-2 right-2"
-          variant={status === "available" ? "default" : status === "sold" ? "destructive" : "secondary"}
+          variant={
+            status === "available"
+              ? "default"
+              : status === "sold"
+              ? "destructive"
+              : "secondary"
+          }
         >
           {status.charAt(0).toUpperCase() + status.slice(1)}
         </Badge>
@@ -56,10 +70,14 @@ export default function PropertyCard({
           {location}
         </div>
         <Link href={`/properties/${id}`}>
-          <CardTitle className="text-lg mb-2 hover:text-primary transition-colors">{title}</CardTitle>
+          <CardTitle className="text-lg mb-2 hover:text-primary transition-colors">
+            {title}
+          </CardTitle>
         </Link>
         <p className="text-2xl font-bold text-primary">{price}</p>
-        {type === "rent" && <p className="text-sm text-muted-foreground">Monthly rent</p>}
+        {type === "rent" && (
+          <p className="text-sm text-muted-foreground">Monthly rent</p>
+        )}
       </CardContent>
       <CardFooter className="p-4 pt-0 flex flex-col gap-4">
         <div className="flex justify-between text-sm text-muted-foreground">
@@ -89,6 +107,5 @@ export default function PropertyCard({
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }
-

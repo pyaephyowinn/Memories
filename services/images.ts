@@ -11,7 +11,7 @@ export async function uploadImage(file: File) {
   const supabase = createClient(supabaseUrl, supabaseKey);
   const { data, error } = await supabase.storage
     .from("property-images")
-    .upload(file.name, file);
+    .upload(`${Date.now()}-${file.name}`, file);
 
   if (error) {
     throw error;
