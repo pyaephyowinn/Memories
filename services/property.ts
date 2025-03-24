@@ -29,6 +29,12 @@ export async function createProperty(property: PropertyType) {
   });
 }
 
+export async function getTop4Properties() {
+  return prisma.listing.findMany({
+    take: 4,
+  });
+}
+
 export async function getPropertyById(id: number) {
   return prisma.listing.findUnique({
     where: {

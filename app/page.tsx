@@ -4,12 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import PropertyCard from "@/components/property-card";
 import SearchFilters from "@/components/search-filters";
+import { getTop4Properties } from "@/services/property";
 
-export default function Home() {
+export default async function Home() {
+  const properties = await getTop4Properties();
+  console.log("properties", properties);
+
   return (
-    <main className="flex-1">
+    <div className="flex-1">
       <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-black">
-        <div className="container px-4 md:px-6">
+        <div className="container mx-auto">
           <div className="flex flex-col items-center space-y-4 text-center">
             <div className="space-y-2">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none text-white">
@@ -39,60 +43,21 @@ export default function Home() {
           </div>
         </div>
       </section>
+
       <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100">
-        <div className="container px-4 md:px-6">
+        <div className="container mx-auto">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8">
             Featured Listings
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            <PropertyCard
-              id="1"
-              imageUrl="/placeholder.svg?height=400&width=600"
-              title="Modern Apartment in Downtown"
-              price="$350,000"
-              beds={2}
-              baths={2}
-              sqft={1200}
-              status="available"
-              type="buy"
-              location="Downtown, New York"
-            />
-            <PropertyCard
-              id="2"
-              imageUrl="/placeholder.svg?height=400&width=600"
-              title="Spacious Family Home"
-              price="$550,000"
-              beds={4}
-              baths={3}
-              sqft={2500}
-              status="available"
-              type="buy"
-              location="Suburbs, Chicago"
-            />
-            <PropertyCard
-              id="3"
-              imageUrl="/placeholder.svg?height=400&width=600"
-              title="Cozy Studio Near Park"
-              price="$1,500/month"
-              beds={1}
-              baths={1}
-              sqft={600}
-              status="available"
-              type="rent"
-              location="Central Park, New York"
-            />
-            <PropertyCard
-              id="4"
-              imageUrl="/placeholder.svg?height=400&width=600"
-              title="Luxury Penthouse with View"
-              price="$1,200,000"
-              beds={3}
-              baths={3}
-              sqft={3000}
-              status="available"
-              type="buy"
-              location="Marina District, San Francisco"
-            />
+          <div
+            className="grid gap-6"
+            style={{
+              gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+            }}
+          >
+            {properties.map((property) => (
+              <PropertyCard key={property.id} {...property} />
+            ))}
           </div>
           <div className="mt-10 text-center">
             <Button asChild>
@@ -101,6 +66,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

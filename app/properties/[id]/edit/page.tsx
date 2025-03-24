@@ -1,8 +1,8 @@
 import { getPropertyById } from "@/services/property";
-import { EditPropertyPageContent } from "../../components/EditPropertyPageContent";
+import { EditPropertyPage } from "../../components/EditPropertyPage";
 import { PropertyDetailType } from "@/lib/schemas";
 
-export default async function EditPropertyPage({
+export default async function EditProperty({
   params,
 }: {
   params: { id: string };
@@ -10,5 +10,5 @@ export default async function EditPropertyPage({
   const id = (await params.id) || "";
   const property = (await getPropertyById(+id)) as PropertyDetailType;
 
-  return <EditPropertyPageContent property={property} />;
+  return <EditPropertyPage property={property} />;
 }

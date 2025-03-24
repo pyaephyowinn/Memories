@@ -55,6 +55,7 @@ export default function NewPropertyPage() {
             yearBuilt: 0,
             status: "",
             images: [],
+            currency: "MMK",
           }}
         />
       </div>

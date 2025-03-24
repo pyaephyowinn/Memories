@@ -45,6 +45,7 @@ export const propertySchema = z.object({
   city: z.string().min(1, "City cannot be blank."),
   state: z.string().min(1, "State cannot be blank."),
   price: z.number().min(1, "Price cannot be blank."),
+  currency: z.string().optional().default("MMK"),
   zipCode: z.string().min(1, "Zip code cannot be blank."),
   propertyType: z.string().min(1, "Property type cannot be blank."),
   listingType: z.string().min(1, "Listing type cannot be blank."),

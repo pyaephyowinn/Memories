@@ -4,7 +4,7 @@ import { PropertyDetailType, PropertyType } from "@/lib/schemas";
 import { PropertyForm } from "./PropertyForm";
 import { updateProperty } from "@/services/property";
 
-export function EditPropertyPageContent({
+export function EditPropertyPage({
   property,
 }: {
   property?: PropertyDetailType;
@@ -41,6 +41,7 @@ export function EditPropertyPageContent({
             yearBuilt: property?.yearBuilt || 0,
             status: property?.status || "",
             images: property?.images || [],
+            currency: property?.currency || "MMK",
           }}
         />
       </div>
