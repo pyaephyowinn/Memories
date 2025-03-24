@@ -45,3 +45,35 @@ export async function updateProperty(id: number, data: PropertyType) {
     data,
   });
 }
+
+export async function deleteProperty(id: number) {
+  return prisma.listing.delete({
+    where: {
+      id,
+    },
+  });
+}
+
+export async function getPropertiesByOwner() {
+  try {
+    const session = await verifySession();
+    const owner = await prisma.owner.findUnique({
+      where: {
+        userId: session.userId,
+      },
+    });
+
+    if (!owner) {
+      throw new Error("Owner not found");
+    }
+
+    return prisma.listing.findMany({
+      where: {
+        ownerId: owner.id,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching properties:", error);
+    throw error;
+  }
+}

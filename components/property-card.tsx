@@ -13,38 +13,26 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-
-interface PropertyCardProps {
-  id: string;
-  imageUrl: string;
-  title: string;
-  price: string;
-  beds: number;
-  baths: number;
-  sqft: number;
-  status: "available" | "sold" | "rented";
-  type: "buy" | "rent";
-  location: string;
-}
+import { PropertyDetailType, PropertyType } from "@/lib/schemas";
 
 export default function PropertyCard({
   id,
-  imageUrl,
+  images,
   title,
   price,
-  beds,
-  baths,
-  sqft,
+  bedrooms,
+  bathrooms,
+  size,
   status,
-  type,
-  location,
-}: PropertyCardProps) {
+  listingType,
+  city,
+}: PropertyDetailType) {
   return (
     <Card className="overflow-hidden">
       <CardHeader className="p-0 relative">
         <Link href={`/properties/${id}`}>
           <Image
-            src={imageUrl || "/placeholder.svg"}
+            src={"/placeholder.svg"}
             alt={title}
             width={600}
             height={400}
@@ -67,7 +55,7 @@ export default function PropertyCard({
       <CardContent className="p-4">
         <div className="flex items-center text-sm text-muted-foreground mb-2">
           <MapPin className="w-4 h-4 mr-1" />
-          {location}
+          {city}
         </div>
         <Link href={`/properties/${id}`}>
           <CardTitle className="text-lg mb-2 hover:text-primary transition-colors">
@@ -75,7 +63,7 @@ export default function PropertyCard({
           </CardTitle>
         </Link>
         <p className="text-2xl font-bold text-primary">{price}</p>
-        {type === "rent" && (
+        {listingType === "rent" && (
           <p className="text-sm text-muted-foreground">Monthly rent</p>
         )}
       </CardContent>
@@ -83,15 +71,15 @@ export default function PropertyCard({
         <div className="flex justify-between text-sm text-muted-foreground">
           <div className="flex items-center">
             <Bed className="w-4 h-4 mr-1" />
-            {beds} beds
+            {bedrooms} beds
           </div>
           <div className="flex items-center">
             <Bath className="w-4 h-4 mr-1" />
-            {baths} baths
+            {bathrooms} baths
           </div>
           <div className="flex items-center">
             <Move className="w-4 h-4 mr-1" />
-            {sqft} sqft
+            {size} sqft
           </div>
         </div>
         <div className="flex gap-2">
