@@ -7,7 +7,6 @@ import { Toaster } from "@/components/ui/toaster";
 export const metadata: Metadata = {
   title: "Memories",
   description: "Memories - Real Estate Platform",
-  generator: "v0.dev",
 };
 
 export default function RootLayout({

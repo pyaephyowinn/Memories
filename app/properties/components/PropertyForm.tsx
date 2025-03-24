@@ -377,15 +377,6 @@ export function PropertyForm({ onSubmit, defaultValues }: PropertyFormProps) {
           </CardContent>
         </Card>
 
-        <button
-          type="button"
-          onClick={() => {
-            console.log(form.getValues());
-          }}
-        >
-          show
-        </button>
-
         <Card>
           <CardHeader>
             <CardTitle>Images</CardTitle>

@@ -3,7 +3,6 @@
 import prisma from "@/lib/prisma";
 import { PropertyType } from "@/lib/schemas";
 import { verifySession } from "@/lib/session";
-import { redirect } from "next/navigation";
 
 export async function createProperty(property: PropertyType) {
   const session = await verifySession();
@@ -21,18 +20,16 @@ export async function createProperty(property: PropertyType) {
     throw new Error("Owner not found");
   }
 
-  await prisma.listing.create({
+  return prisma.listing.create({
     data: {
       ...property,
       ownerId: owner.id,
       verificationStatus: "pending",
     },
   });
-
-  redirect("/d");
 }
 
-export function getPropertyById(id: number) {
+export async function getPropertyById(id: number) {
   return prisma.listing.findUnique({
     where: {
       id,

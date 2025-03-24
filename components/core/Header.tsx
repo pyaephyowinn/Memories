@@ -1,8 +1,13 @@
 import Link from "next/link";
 import { HomeIcon } from "lucide-react";
 import { Button } from "../ui/button";
+import { decrypt } from "@/lib/session";
+import { cookies } from "next/headers";
 
-export function Header() {
+export async function Header() {
+  const cookie = (await cookies()).get("session")?.value;
+  const session = await decrypt(cookie);
+
   return (
     <header className="px-4 lg:px-6 h-14 flex items-center border-b sticky top-0 z-50 bg-white">
       <Link className="flex items-center justify-center" href="/">
@@ -35,21 +40,26 @@ export function Header() {
         >
           About
         </Link>
-        <Link
-          className="text-sm font-medium hover:underline underline-offset-4"
-          href="/d"
-        >
-          Dashboard
-        </Link>
-        <Link
-          className="text-sm font-medium text-primary hover:underline underline-offset-4"
-          href="/login"
-        >
-          Login
-        </Link>
-        <Link href="/register">
-          <Button size="sm">Register</Button>
-        </Link>
+        {session?.userId ? (
+          <Link
+            className="text-sm font-medium hover:underline underline-offset-4"
+            href="/d"
+          >
+            Dashboard
+          </Link>
+        ) : (
+          <>
+            <Link
+              className="text-sm font-medium text-primary hover:underline underline-offset-4"
+              href="/login"
+            >
+              Login
+            </Link>
+            <Link href="/register">
+              <Button size="sm">Register</Button>
+            </Link>
+          </>
+        )}
       </nav>
     </header>
   );
