@@ -52,7 +52,7 @@ model Listing {
   city               String
   state              String
   price              Float
-  currency           String              @default("MMK")
+  currency           String
   zipCode            String
   propertyType       String
   listingType        String

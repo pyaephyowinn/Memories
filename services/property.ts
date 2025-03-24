@@ -44,6 +44,7 @@ export async function getPropertyById(id: number) {
 }
 
 export async function updateProperty(id: number, data: PropertyType) {
+  console.log("data", data);
   return prisma.listing.update({
     where: {
       id,

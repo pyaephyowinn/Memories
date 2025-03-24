@@ -50,10 +50,10 @@ export function PropertyForm({ onSubmit, defaultValues }: PropertyFormProps) {
     if (!files) return;
 
     const images = await Promise.all(
-      Array.from(files).map((file) => uploadImage(file))
+      Array.from(files).map((file) => uploadImage(file)) || []
     );
 
-    form.setValue("images", images);
+    form.setValue("images", [...images, ...form.getValues("images")]);
   };
 
   const removeImage = (url: string) => {
