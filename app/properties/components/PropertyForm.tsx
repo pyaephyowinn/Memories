@@ -25,12 +25,16 @@ import { propertySchema, PropertyType } from "@/lib/schemas";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { uploadImage } from "@/services/images";
+
+import { propertyFeatures } from "@/lib/constants";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type PropertyFormProps = {
   onSubmit: (data: PropertyType) => void;
@@ -374,6 +378,57 @@ export function PropertyForm({ onSubmit, defaultValues }: PropertyFormProps) {
                 )}
               />
             </div>
+
+            <FormField
+              control={form.control}
+              name="features"
+              render={() => (
+                <FormItem>
+                  <div className="mb-4">
+                    <FormLabel className="text-base">Features</FormLabel>
+                    <FormDescription>
+                      Select the features of your property
+                    </FormDescription>
+                  </div>
+                  {propertyFeatures.map((item) => (
+                    <FormField
+                      key={item}
+                      control={form.control}
+                      name="features"
+                      render={({ field }) => {
+                        return (
+                          <FormItem
+                            key={item}
+                            className="flex flex-row items-start space-x-3 space-y-0"
+                          >
+                            <FormControl>
+                              <Checkbox
+                                onChange={(e) => console.log("triggered")}
+                                checked={field.value?.includes(item)}
+                                onCheckedChange={(checked) => {
+                                  console.log("triggered");
+                                  return checked
+                                    ? field.onChange([...field.value, item])
+                                    : field.onChange(
+                                        field.value?.filter(
+                                          (value) => value !== item
+                                        )
+                                      );
+                                }}
+                              />
+                            </FormControl>
+                            <FormLabel className="text-sm font-normal">
+                              {item}
+                            </FormLabel>
+                          </FormItem>
+                        );
+                      }}
+                    />
+                  ))}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </CardContent>
         </Card>
 

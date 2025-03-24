@@ -38,13 +38,18 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useRouter } from "next/navigation";
+import { PropertyDetailType } from "@/lib/schemas";
 
-export function PropertyDetailPage() {
+export function PropertyDetailPage({
+  property,
+}: {
+  property: PropertyDetailType;
+}) {
   const router = useRouter();
   const [liked, setLiked] = useState(false);
 
   // Mock property data
-  const property = {
+  const property_ = {
     id: "params.id",
     title: "Modern Apartment in Downtown",
     price: "$350,000",
@@ -100,7 +105,7 @@ export function PropertyDetailPage() {
 
             <div className="flex items-center text-sm text-muted-foreground">
               <MapPin className="h-4 w-4 mr-1" />
-              {property.location}
+              {property_.location}
             </div>
           </div>
           <h1 className="text-3xl font-bold tracking-tight mt-2">
@@ -124,7 +129,7 @@ export function PropertyDetailPage() {
             Share
           </Button>
           <Button asChild size="sm">
-            <Link href={`/appointments/schedule/${property.id}`}>
+            <Link href={`/appointments/schedule/${property_.id}`}>
               <Calendar className="h-4 w-4 mr-2" />
               Schedule Viewing
             </Link>
@@ -141,7 +146,7 @@ export function PropertyDetailPage() {
                   <div className="relative aspect-video overflow-hidden rounded-lg">
                     <Image
                       src={image || "/placeholder.svg"}
-                      alt={`${property.title} - Image ${index + 1}`}
+                      alt={`${property_.title} - Image ${index + 1}`}
                       fill
                       className="object-cover"
                     />
@@ -156,24 +161,24 @@ export function PropertyDetailPage() {
           <div className="flex justify-between text-sm">
             <div className="flex items-center">
               <Bed className="h-5 w-5 mr-1" />
-              {property.beds} beds
+              {property.bedrooms} beds
             </div>
             <div className="flex items-center">
               <Bath className="h-5 w-5 mr-1" />
-              {property.baths} baths
+              {property.bathrooms} baths
             </div>
             <div className="flex items-center">
               <Move className="h-5 w-5 mr-1" />
-              {property.sqft} sqft
+              {property.size} sqft
             </div>
             <div className="flex items-center">
               <Badge
+                className="capitalize"
                 variant={
                   property.status === "available" ? "default" : "secondary"
                 }
               >
-                {property.status.charAt(0).toUpperCase() +
-                  property.status.slice(1)}
+                {property.status}
               </Badge>
             </div>
           </div>
@@ -198,7 +203,7 @@ export function PropertyDetailPage() {
                   <h4 className="text-sm font-medium text-muted-foreground">
                     Property Type
                   </h4>
-                  <p>Apartment</p>
+                  <p className="capitalize">{property.propertyType}</p>
                 </div>
                 <div>
                   <h4 className="text-sm font-medium text-muted-foreground">
@@ -210,16 +215,15 @@ export function PropertyDetailPage() {
                   <h4 className="text-sm font-medium text-muted-foreground">
                     Status
                   </h4>
-                  <p>
-                    {property.status.charAt(0).toUpperCase() +
-                      property.status.slice(1)}
-                  </p>
+                  <div className="capitalize">{property.status}</div>
                 </div>
                 <div>
                   <h4 className="text-sm font-medium text-muted-foreground">
                     Listing Type
                   </h4>
-                  <p>{property.type === "buy" ? "For Sale" : "For Rent"}</p>
+                  <p>
+                    {property.listingType === "rent" ? "For Rent" : "For Sale"}
+                  </p>
                 </div>
               </div>
             </TabsContent>
@@ -243,7 +247,7 @@ export function PropertyDetailPage() {
                   Map would be displayed here
                 </p>
               </div>
-              <p className="text-muted-foreground">{property.location}</p>
+              <p className="text-muted-foreground">{property_.location}</p>
             </TabsContent>
           </Tabs>
         </div>
@@ -260,13 +264,13 @@ export function PropertyDetailPage() {
               <div className="flex items-center gap-4">
                 <Avatar className="h-12 w-12">
                   <AvatarImage
-                    src={property.agent.image}
-                    alt={property.agent.name}
+                    src={property_.agent.image}
+                    alt={property_.agent.name}
                   />
                   <AvatarFallback>SJ</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-medium">{property.agent.name}</p>
+                  <p className="font-medium">{property_.agent.name}</p>
                   <p className="text-sm text-muted-foreground">Listing Agent</p>
                 </div>
               </div>
@@ -274,11 +278,11 @@ export function PropertyDetailPage() {
               <div className="grid grid-cols-1 gap-2">
                 <Button variant="outline" className="justify-start">
                   <Phone className="h-4 w-4 mr-2" />
-                  {property.agent.phone}
+                  {property_.agent.phone}
                 </Button>
                 <Button variant="outline" className="justify-start">
                   <Mail className="h-4 w-4 mr-2" />
-                  {property.agent.email}
+                  {property_.agent.email}
                 </Button>
               </div>
 
@@ -299,7 +303,7 @@ export function PropertyDetailPage() {
             <CardHeader>
               <CardTitle>Schedule a Viewing</CardTitle>
               <CardDescription>
-                Book an appointment to see this property
+                Book an appointment to see this property_
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -310,7 +314,7 @@ export function PropertyDetailPage() {
                 </p>
               </div>
               <Button asChild className="w-full">
-                <Link href={`/appointments/schedule/${property.id}`}>
+                <Link href={`/appointments/schedule/${property_.id}`}>
                   Schedule Now
                 </Link>
               </Button>
@@ -327,7 +331,7 @@ export function PropertyDetailPage() {
                   <div className="relative h-16 w-16 flex-none rounded-md overflow-hidden">
                     <Image
                       src="/placeholder.svg?height=100&width=100"
-                      alt="Similar property"
+                      alt="Similar property_"
                       fill
                       className="object-cover"
                     />

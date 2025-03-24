@@ -54,6 +54,7 @@ export const propertySchema = z.object({
   bathrooms: z.number().min(1, "Bathrooms cannot be blank."),
   yearBuilt: z.number().min(1, "Year built cannot be blank."),
   status: z.string().min(1, "Status cannot be blank."),
+  features: z.array(z.string()),
   images: z
     .array(z.string())
     .max(10, "You can only upload 10 images.")

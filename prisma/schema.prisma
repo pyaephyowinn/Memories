@@ -64,6 +64,7 @@ model Listing {
   verificationStatus String
   ownerId            Int
   images             String[]
+  features           String[]
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @default(now())
   owner              Owner               @relation(fields: [ownerId], references: [id])

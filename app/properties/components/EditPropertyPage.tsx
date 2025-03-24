@@ -41,6 +41,7 @@ export function EditPropertyPage({
             yearBuilt: property?.yearBuilt || 0,
             status: property?.status || "",
             images: property?.images || [],
+            features: property?.features || [],
             currency: property?.currency || "MMK",
           }}
         />
