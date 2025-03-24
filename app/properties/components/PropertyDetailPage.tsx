@@ -242,12 +242,27 @@ export function PropertyDetailPage({
 
             <TabsContent value="location" className="space-y-4">
               <h3 className="text-lg font-semibold">Location</h3>
-              <div className="aspect-video bg-muted rounded-md flex items-center justify-center">
-                <p className="text-muted-foreground">
-                  Map would be displayed here
-                </p>
+
+              <div className="flex flex-col gap-4">
+                <div>
+                  <h4 className="text-sm font-medium text-muted-foreground">
+                    Street:
+                  </h4>
+                  <p className="font-semibold">{property.streetAddress}</p>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-muted-foreground">
+                    City:
+                  </h4>
+                  <p className="font-semibold">{property.city}</p>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-muted-foreground">
+                    State:
+                  </h4>
+                  <p className="font-semibold">{property.state}</p>
+                </div>
               </div>
-              <p className="text-muted-foreground">{property_.location}</p>
             </TabsContent>
           </Tabs>
         </div>
