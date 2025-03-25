@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { RoleType } from "@/lib/configs";
-import { saltAndHashPassword, verifyPassword } from "@/lib/password";
+import { hashPassword, matchPassword } from "@/lib/password";
 import prisma from "@/lib/prisma";
 import { CustomerRegistrationType, OwnerRegistrationType } from "@/lib/schemas";
 import { createSession, getSession } from "@/lib/session";
@@ -10,7 +10,7 @@ import { createSession, getSession } from "@/lib/session";
 export async function createCustomer(
   data: CustomerRegistrationType & { role: RoleType }
 ) {
-  const hashedPassword = await saltAndHashPassword(data.password);
+  const hashedPassword = await hashPassword(data.password);
   const user = await prisma.user.create({
     data: {
       username: data.username,
@@ -34,7 +34,7 @@ export async function createCustomer(
 export async function createOwner(
   data: OwnerRegistrationType & { role: RoleType }
 ) {
-  const hashedPassword = await saltAndHashPassword(data.password);
+  const hashedPassword = await hashPassword(data.password);
   const user = await prisma.user.create({
     data: {
       username: data.username,
@@ -67,7 +67,7 @@ export async function login(email: string, password: string) {
   if (!user) {
     throw new Error("User not found");
   }
-  const isPasswordValid = await verifyPassword(password, user.password);
+  const isPasswordValid = await matchPassword(password, user.password);
 
   if (!isPasswordValid) {
     throw new Error("Invalid password");
