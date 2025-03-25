@@ -26,11 +26,6 @@ export async function createAppointment(
     }),
   ]);
 
-  console.log({
-    customer,
-    listing,
-  });
-
   if (!customer || !listing) {
     throw new Error("Customer or listing not found");
   }

@@ -8,7 +8,6 @@ import { getTop4Properties } from "@/services/property";
 
 export default async function Home() {
   const properties = await getTop4Properties();
-  console.log("properties", properties);
 
   return (
     <div className="flex-1">

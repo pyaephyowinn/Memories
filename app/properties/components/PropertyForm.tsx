@@ -403,10 +403,8 @@ export function PropertyForm({ onSubmit, defaultValues }: PropertyFormProps) {
                           >
                             <FormControl>
                               <Checkbox
-                                onChange={(e) => console.log("triggered")}
                                 checked={field.value?.includes(item)}
                                 onCheckedChange={(checked) => {
-                                  console.log("triggered");
                                   return checked
                                     ? field.onChange([...field.value, item])
                                     : field.onChange(

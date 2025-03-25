@@ -122,7 +122,6 @@ export default function AppointmentForm({
                           initialFocus
                           selected={field.value}
                           onSelect={(date) => {
-                            console.log("triggered");
                             const updatedDate = new Date(updateDateOnly(date)!);
                             field.onChange(updatedDate);
                           }}

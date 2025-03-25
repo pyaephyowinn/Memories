@@ -14,7 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ArrowLeft, Calendar } from "lucide-react";
-import { AppointmentType, PropertyDetailType } from "@/lib/schemas";
+import { AppointmentType } from "@/lib/schemas";
 import { useToast } from "@/hooks/use-toast";
 import { createAppointment } from "@/services/appointment";
 
@@ -32,7 +32,7 @@ export function NewAppointmentPage({
   propertyId,
 }: NewAppointmentPageProps) {
   const { toast } = useToast();
-  const [isSubmitted, setIsSubmitted] = useState(true);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = async (data: Omit<AppointmentType, "hour">) => {
     try {
