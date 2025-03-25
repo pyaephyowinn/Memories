@@ -14,8 +14,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ArrowLeft, Calendar } from "lucide-react";
-import { Prisma } from "@prisma/client";
-import { PropertyDetailType } from "@/lib/schemas";
+import { AppointmentType, PropertyDetailType } from "@/lib/schemas";
+import { useToast } from "@/hooks/use-toast";
+import { createAppointment } from "@/services/appointment";
 
 type NewAppointmentPageProps = {
   currentUser: {
@@ -23,47 +24,35 @@ type NewAppointmentPageProps = {
     email: string;
     phone: string;
   };
-  property: PropertyDetailType;
+  propertyId: number;
 };
 
 export function NewAppointmentPage({
   currentUser,
-  property,
+  propertyId,
 }: NewAppointmentPageProps) {
+  const { toast } = useToast();
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitted(true);
+  const handleSubmit = async (data: Omit<AppointmentType, "hour">) => {
+    try {
+      await createAppointment({
+        ...data,
+        listingId: propertyId,
+      });
+      setIsSubmitted(true);
+    } catch {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Something went wrong",
+      });
+    }
   };
 
-  return (
-    <div className="mx-auto max-w-2xl space-y-6 container py-4 md:py-8">
-      <div className="flex items-center gap-2">
-        <Button asChild variant="ghost" size="icon">
-          <Link href={`/properties/1`}>
-            <ArrowLeft className="h-4 w-4" />
-            <span className="sr-only">Back to property</span>
-          </Link>
-        </Button>
-        <h1 className="text-3xl font-bold tracking-tight">
-          Schedule a Viewing
-        </h1>
-      </div>
-
-      {!isSubmitted ? (
-        <AppointmentForm
-          username={currentUser.username}
-          email={currentUser.email}
-          phone={currentUser.phone}
-          onSubmit={() => {}}
-          defaultValues={{
-            date: new Date(),
-            message: "",
-            time: "",
-          }}
-        />
-      ) : (
+  if (isSubmitted) {
+    return (
+      <div className="mx-auto max-w-2xl space-y-6 container py-4 md:py-8 flex-1 grid place-items-center">
         <Card>
           <CardHeader>
             <CardTitle>Appointment Requested</CardTitle>
@@ -98,7 +87,35 @@ export function NewAppointmentPage({
             </Button>
           </CardFooter>
         </Card>
-      )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="mx-auto max-w-2xl space-y-6 container py-4 md:py-8">
+      <div className="flex items-center gap-2">
+        <Button asChild variant="ghost" size="icon">
+          <Link href={`/properties/1`}>
+            <ArrowLeft className="h-4 w-4" />
+            <span className="sr-only">Back to property</span>
+          </Link>
+        </Button>
+        <h1 className="text-3xl font-bold tracking-tight">
+          Schedule a Viewing
+        </h1>
+      </div>
+
+      <AppointmentForm
+        username={currentUser.username}
+        email={currentUser.email}
+        phone={currentUser.phone}
+        onSubmit={handleSubmit}
+        defaultValues={{
+          date: new Date(),
+          message: "",
+          hour: 9,
+        }}
+      />
     </div>
   );
 }

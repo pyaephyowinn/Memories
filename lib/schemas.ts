@@ -83,8 +83,8 @@ export type PropertyDetailType = PropertyType & {
 };
 
 export const appointmentSchema = z.object({
-  date: z.date().min(new Date(), "Date cannot be in the past."),
-  time: z.string(),
+  date: z.date().min(new Date(), "Date cannot be blank."),
+  hour: z.number().min(1, "Time cannot be blank."),
   message: z.string().min(1, "Message cannot be blank."),
 });
 

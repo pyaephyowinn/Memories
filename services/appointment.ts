@@ -1,15 +1,48 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { AppointmentType } from "@/lib/schemas";
+import { getSession } from "@/lib/session";
 
-export async function createAppointment(data: {
-  dateTime: Date;
-  status: string;
-  customerId: number;
-  listingId: number;
-}) {
+export async function createAppointment(
+  data: Omit<AppointmentType, "hour"> & { listingId: number }
+) {
+  const session = await getSession();
+
+  if (!session) {
+    throw new Error("Session not found");
+  }
+
+  const [customer, listing] = await Promise.all([
+    prisma.customer.findUnique({
+      where: {
+        userId: session.userId,
+      },
+    }),
+    prisma.listing.findUnique({
+      where: {
+        id: data.listingId,
+      },
+    }),
+  ]);
+
+  console.log({
+    customer,
+    listing,
+  });
+
+  if (!customer || !listing) {
+    throw new Error("Customer or listing not found");
+  }
+
   return prisma.appointment.create({
-    data,
+    data: {
+      dateTime: data.date,
+      message: data.message,
+      status: "pending",
+      customerId: customer.id,
+      listingId: listing.id,
+    },
   });
 }
 

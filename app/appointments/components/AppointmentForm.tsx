@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-import Link from "next/link";
 import { Calendar, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -39,14 +38,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { updateDateOnly, updateHours } from "@/lib/date";
+import { updateDateOnly, updateHour } from "@/lib/date";
 import { getHours } from "date-fns";
+import { useRouter } from "next/navigation";
 
 type AppointmentFormProps = {
   username: string;
   email: string;
   phone: string;
-  onSubmit: (data: AppointmentType) => void;
+  onSubmit: (data: Omit<AppointmentType, "hour">) => void;
   defaultValues: AppointmentType;
 };
 
@@ -57,6 +57,7 @@ export default function AppointmentForm({
   email,
   phone,
 }: AppointmentFormProps) {
+  const router = useRouter();
   const form = useForm<AppointmentType>({
     resolver: zodResolver(appointmentSchema),
     defaultValues,
@@ -64,11 +65,17 @@ export default function AppointmentForm({
 
   const date = form.watch("date");
 
-  console.log("date", date);
+  const handleSubmit = (data: AppointmentType) => {
+    const updatedDate = updateHour(data.date, data.hour);
+    onSubmit({
+      date: updatedDate,
+      message: data.message,
+    });
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(handleSubmit)}>
         <Card>
           <CardHeader>
             <CardTitle>Appointment Details</CardTitle>
@@ -113,9 +120,11 @@ export default function AppointmentForm({
                         <CalendarComponent
                           mode="single"
                           initialFocus
-                          // value={field.value}
+                          selected={field.value}
                           onSelect={(date) => {
-                            field.onChange(updateDateOnly(date));
+                            console.log("triggered");
+                            const updatedDate = new Date(updateDateOnly(date)!);
+                            field.onChange(updatedDate);
                           }}
                           disabled={(date) => {
                             // Disable past dates and Sundays
@@ -134,7 +143,7 @@ export default function AppointmentForm({
 
             <FormField
               control={form.control}
-              name="date"
+              name="hour"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Preferred Time</FormLabel>
@@ -142,9 +151,9 @@ export default function AppointmentForm({
                     <div className="flex items-center space-x-2">
                       <Clock className="h-4 w-4 text-muted-foreground" />
                       <Select
-                        value={getHours(date).toString()}
-                        onValueChange={(e) => {
-                          field.onChange(updateHours(date, parseInt(e)));
+                        value={field.value.toString()}
+                        onValueChange={(val) => {
+                          field.onChange(parseInt(val));
                         }}
                       >
                         <SelectTrigger id="time">
@@ -189,8 +198,13 @@ export default function AppointmentForm({
             />
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button asChild variant="outline">
-              <Link href={`/properties/${1}`}>Cancel</Link>
+            <Button
+              variant="outline"
+              onClick={() => {
+                router.back();
+              }}
+            >
+              Cancel
             </Button>
             <Button type="submit">Request Appointment</Button>
           </CardFooter>

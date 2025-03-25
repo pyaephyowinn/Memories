@@ -1,6 +1,6 @@
 import { getHours, setHours, startOfDay } from "date-fns";
 
-export function updateHours(date: Date, hours: number) {
+export function updateHour(date: Date, hours: number) {
   return setHours(date, hours);
 }
 

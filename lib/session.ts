@@ -57,6 +57,11 @@ export const verifySession = cache(async () => {
   return { isAuth: true, userId: session.userId as number };
 });
 
+export async function getSession() {
+  const cookie = (await cookies()).get("session")?.value;
+  return decrypt(cookie);
+}
+
 export async function deleteSession() {
   const cookieStore = await cookies();
   cookieStore.delete("session");

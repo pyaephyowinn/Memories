@@ -1,11 +1,11 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { RoleType } from "@/lib/configs";
 import { saltAndHashPassword, verifyPassword } from "@/lib/password";
 import prisma from "@/lib/prisma";
 import { CustomerRegistrationType, OwnerRegistrationType } from "@/lib/schemas";
-import { createSession, decrypt, verifySession } from "@/lib/session";
-import { redirect } from "next/navigation";
+import { createSession, getSession } from "@/lib/session";
 
 export async function createCustomer(
   data: CustomerRegistrationType & { role: RoleType }
@@ -78,7 +78,7 @@ export async function login(email: string, password: string) {
 }
 
 export async function getMe() {
-  const session = await verifySession();
+  const session = await getSession();
 
   if (!session) {
     throw new Error("Session not found");
