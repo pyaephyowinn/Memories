@@ -8,5 +8,7 @@ export default async function page({ params }: { params: { id: string } }) {
     return <div>Property not found</div>;
   }
 
+  console.log("property", property);
+
   return <PropertyDetailPage property={property} />;
 }

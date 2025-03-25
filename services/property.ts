@@ -40,6 +40,13 @@ export async function getPropertyById(id: number) {
     where: {
       id,
     },
+    include: {
+      owner: {
+        include: {
+          user: true,
+        },
+      },
+    },
   });
 }
 

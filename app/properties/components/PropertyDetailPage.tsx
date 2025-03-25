@@ -28,7 +28,6 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Carousel,
@@ -39,6 +38,7 @@ import {
 } from "@/components/ui/carousel";
 import { useRouter } from "next/navigation";
 import { PropertyDetailType } from "@/lib/schemas";
+import { UserAvatar } from "@/components/user-avatar";
 
 export function PropertyDetailPage({
   property,
@@ -129,7 +129,7 @@ export function PropertyDetailPage({
             Share
           </Button>
           <Button asChild size="sm">
-            <Link href={`/appointments/schedule/${property_.id}`}>
+            <Link href={`/appointments/schedule/${property.id}`}>
               <Calendar className="h-4 w-4 mr-2" />
               Schedule Viewing
             </Link>
@@ -146,7 +146,7 @@ export function PropertyDetailPage({
                   <div className="relative aspect-video overflow-hidden rounded-lg">
                     <Image
                       src={image || "/placeholder.svg"}
-                      alt={`${property_.title} - Image ${index + 1}`}
+                      alt={`${property.title} - Image ${index + 1}`}
                       fill
                       className="object-cover"
                     />
@@ -277,15 +277,14 @@ export function PropertyDetailPage({
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-4">
-                <Avatar className="h-12 w-12">
-                  <AvatarImage
-                    src={property_.agent.image}
-                    alt={property_.agent.name}
-                  />
-                  <AvatarFallback>SJ</AvatarFallback>
-                </Avatar>
+                <UserAvatar
+                  image=""
+                  name={property.owner?.user?.username || ""}
+                />
                 <div>
-                  <p className="font-medium">{property_.agent.name}</p>
+                  <p className="font-medium">
+                    {property.owner?.user?.username}
+                  </p>
                   <p className="text-sm text-muted-foreground">Listing Agent</p>
                 </div>
               </div>
@@ -293,11 +292,11 @@ export function PropertyDetailPage({
               <div className="grid grid-cols-1 gap-2">
                 <Button variant="outline" className="justify-start">
                   <Phone className="h-4 w-4 mr-2" />
-                  {property_.agent.phone}
+                  {property.owner?.user?.phone}
                 </Button>
                 <Button variant="outline" className="justify-start">
                   <Mail className="h-4 w-4 mr-2" />
-                  {property_.agent.email}
+                  {property.owner?.user?.email}
                 </Button>
               </div>
 
@@ -318,7 +317,7 @@ export function PropertyDetailPage({
             <CardHeader>
               <CardTitle>Schedule a Viewing</CardTitle>
               <CardDescription>
-                Book an appointment to see this property_
+                Book an appointment to see this property
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -329,7 +328,7 @@ export function PropertyDetailPage({
                 </p>
               </div>
               <Button asChild className="w-full">
-                <Link href={`/appointments/schedule/${property_.id}`}>
+                <Link href={`/appointments/schedule/${property.id}/new`}>
                   Schedule Now
                 </Link>
               </Button>
@@ -346,7 +345,7 @@ export function PropertyDetailPage({
                   <div className="relative h-16 w-16 flex-none rounded-md overflow-hidden">
                     <Image
                       src="/placeholder.svg?height=100&width=100"
-                      alt="Similar property_"
+                      alt="Similar property"
                       fill
                       className="object-cover"
                     />

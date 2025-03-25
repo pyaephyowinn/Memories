@@ -64,4 +64,33 @@ export const propertySchema = z.object({
 export type PropertyType = z.infer<typeof propertySchema>;
 export type PropertyDetailType = PropertyType & {
   id: number;
+  owner?: {
+    id: number;
+    businessName: string;
+    taxInformation: string | null;
+    licenseNumber: string | null;
+    userId: number;
+    user?: {
+      id: number;
+      username: string;
+      email: string;
+      password: string;
+      phone: string;
+      twoFAEnabled: boolean;
+      role: string;
+    };
+  };
+};
+
+export const appointmentSchema = z.object({
+  date: z.date().min(new Date(), "Date cannot be in the past."),
+  time: z.string(),
+  message: z.string().min(1, "Message cannot be blank."),
+});
+
+export type AppointmentType = z.infer<typeof appointmentSchema>;
+export type AppointmentDetailType = AppointmentType & {
+  name: string;
+  email: string;
+  phone: string;
 };

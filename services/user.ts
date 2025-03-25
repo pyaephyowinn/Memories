@@ -4,7 +4,7 @@ import { RoleType } from "@/lib/configs";
 import { saltAndHashPassword, verifyPassword } from "@/lib/password";
 import prisma from "@/lib/prisma";
 import { CustomerRegistrationType, OwnerRegistrationType } from "@/lib/schemas";
-import { createSession } from "@/lib/session";
+import { createSession, decrypt, verifySession } from "@/lib/session";
 import { redirect } from "next/navigation";
 
 export async function createCustomer(
@@ -75,4 +75,21 @@ export async function login(email: string, password: string) {
 
   createSession(user.id);
   redirect("/profile");
+}
+
+export async function getMe() {
+  const session = await verifySession();
+
+  if (!session) {
+    throw new Error("Session not found");
+  }
+
+  return prisma.user.findUnique({
+    where: {
+      id: session.userId,
+    },
+    omit: {
+      password: true,
+    },
+  });
 }

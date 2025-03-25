@@ -81,6 +81,7 @@ model Appointment {
   dateTime   DateTime
   status     String
   customerId Int
+  message    String
   customer   Customer @relation(fields: [customerId], references: [id])
   listingId  Int
   listing    Listing  @relation(fields: [listingId], references: [id])
