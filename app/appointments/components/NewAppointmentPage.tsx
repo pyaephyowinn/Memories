@@ -32,7 +32,7 @@ export function NewAppointmentPage({
   propertyId,
 }: NewAppointmentPageProps) {
   const { toast } = useToast();
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(true);
 
   const handleSubmit = async (data: Omit<AppointmentType, "hour">) => {
     try {
@@ -83,7 +83,7 @@ export function NewAppointmentPage({
           </CardContent>
           <CardFooter className="flex justify-center">
             <Button asChild>
-              <Link href="/dashboard">Go to Dashboard</Link>
+              <Link href="/profile">Go to Dashboard</Link>
             </Button>
           </CardFooter>
         </Card>
