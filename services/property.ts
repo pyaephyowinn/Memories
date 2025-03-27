@@ -90,3 +90,27 @@ export async function getPropertiesByOwner() {
     throw error;
   }
 }
+
+export async function getDashboardProperties() {
+  const [properties, appointments] = await Promise.all([
+    prisma.listing.findMany({
+      take: 4,
+    }),
+    prisma.appointment.findMany({
+      take: 4,
+      include: {
+        listing: true,
+        customer: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    }),
+  ]);
+
+  return {
+    properties,
+    appointments,
+  };
+}

@@ -32,7 +32,7 @@ export async function createAppointment(
 
   return prisma.appointment.create({
     data: {
-      dateTime: data.date,
+      dateTime: data.dateTime,
       message: data.message,
       status: "pending",
       customerId: customer.id,
@@ -76,6 +76,28 @@ export async function deleteAppointment(id: number) {
   return prisma.appointment.delete({
     where: {
       id,
+    },
+  });
+}
+
+export async function confirmAppointment(id: number) {
+  return prisma.appointment.update({
+    where: {
+      id,
+    },
+    data: {
+      status: "confirmed",
+    },
+  });
+}
+
+export async function declineAppointment(id: number) {
+  return prisma.appointment.update({
+    where: {
+      id,
+    },
+    data: {
+      status: "declined",
     },
   });
 }

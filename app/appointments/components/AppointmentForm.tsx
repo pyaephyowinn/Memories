@@ -63,12 +63,12 @@ export default function AppointmentForm({
     defaultValues,
   });
 
-  const date = form.watch("date");
+  const date = form.watch("dateTime");
 
   const handleSubmit = (data: AppointmentType) => {
-    const updatedDate = updateHour(data.date, data.hour);
+    const updatedDate = updateHour(data.dateTime, data.hour);
     onSubmit({
-      date: updatedDate,
+      dateTime: updatedDate,
       message: data.message,
     });
   };
@@ -101,7 +101,7 @@ export default function AppointmentForm({
 
             <FormField
               control={form.control}
-              name="date"
+              name="dateTime"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Preferred Date</FormLabel>
