@@ -79,7 +79,7 @@ import {
 import { ColumnDef } from "@tanstack/react-table";
 import { Download, FileText, Filter, Search } from "lucide-react";
 
-export default function TransactionsPage() {
+export default function AppointmentPage() {
   const columns: ColumnDef<any>[] = [
     {
       accessorKey: "id",
@@ -111,9 +111,9 @@ export default function TransactionsPage() {
     <div className="container mx-auto flex flex-col gap-6 py-4 md:py-8">
       <div className="flex flex-col md:flex-row justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Transactions</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Appointments</h1>
           <p className="text-muted-foreground">
-            Manage your property sales, rentals, and payments
+            View and manage your appointments
           </p>
         </div>
         <div className="flex gap-2">

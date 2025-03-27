@@ -4,17 +4,20 @@ import { PropertyType } from "@/lib/schemas";
 import { PropertyForm } from "../components/PropertyForm";
 import { createProperty } from "@/services/property";
 import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 export default function NewPropertyPage() {
+  const router = useRouter();
   const { toast } = useToast();
 
   const handleSubmit = async (data: PropertyType) => {
     try {
-      const createdProperty = await createProperty(data);
+      await createProperty(data);
       toast({
         title: "Success",
         description: "Property created successfully",
       });
+      router.push("/d");
     } catch (err) {
       console.log("err", err);
       toast({

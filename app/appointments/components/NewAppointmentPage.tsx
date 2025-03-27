@@ -17,13 +17,10 @@ import { ArrowLeft, Calendar } from "lucide-react";
 import { AppointmentType } from "@/lib/schemas";
 import { useToast } from "@/hooks/use-toast";
 import { createAppointment } from "@/services/appointment";
+import { Prisma } from "@prisma/client";
 
 type NewAppointmentPageProps = {
-  currentUser: {
-    username: string;
-    email: string;
-    phone: string;
-  };
+  currentUser: Prisma.UserGetPayload<{ omit: { password: true } }>;
   propertyId: number;
 };
 
@@ -111,7 +108,7 @@ export function NewAppointmentPage({
         phone={currentUser.phone}
         onSubmit={handleSubmit}
         defaultValues={{
-          date: new Date(),
+          dateTime: new Date(),
           message: "",
           hour: 9,
         }}

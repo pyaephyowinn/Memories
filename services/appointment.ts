@@ -41,10 +41,18 @@ export async function createAppointment(
   });
 }
 
-export async function getAppointmentById(id: number) {
+export async function getAppointment(id: number) {
   return prisma.appointment.findUnique({
     where: {
       id,
+    },
+    include: {
+      listing: true,
+      customer: {
+        include: {
+          user: true,
+        },
+      },
     },
   });
 }
@@ -80,13 +88,13 @@ export async function deleteAppointment(id: number) {
   });
 }
 
-export async function confirmAppointment(id: number) {
+export async function acceptAppointment(id: number) {
   return prisma.appointment.update({
     where: {
       id,
     },
     data: {
-      status: "confirmed",
+      status: "accept",
     },
   });
 }
