@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { PropertyDetailType } from "@/lib/schemas";
+import { Prisma } from "@prisma/client";
 
 export default function PropertyCard({
   id,
@@ -25,15 +25,14 @@ export default function PropertyCard({
   status,
   listingType,
   city,
-  streetAddress,
   currency,
-}: PropertyDetailType) {
+}: Prisma.ListingGetPayload<{}>) {
   return (
     <Card className="overflow-hidden">
       <CardHeader className="p-0 relative">
         <Link href={`/properties/${id}`}>
           <Image
-            src={images[0] || "/placeholder.svg"}
+            src={images?.[0] || "/placeholder.svg"}
             alt={title}
             width={600}
             height={400}
@@ -57,18 +56,15 @@ export default function PropertyCard({
       <CardContent className="p-4">
         <div className="flex text-sm text-muted-foreground mb-2">
           <MapPin className="w-4 h-4 mr-1" />
-          <div className="flex flex-col">
-            <span className="text-xs">{streetAddress}</span>
-            <span>{city}</span>
-          </div>
+          <span>{city}</span>
         </div>
         <Link href={`/properties/${id}`}>
-          <CardTitle className="text-lg mb-2 hover:text-primary transition-colors">
+          <CardTitle className="text-base md:text-lg md:mb-2 hover:text-primary transition-colors">
             {title}
           </CardTitle>
         </Link>
-        <p className="text-2xl font-bold text-primary">
-          {price} {currency || "MMK"}
+        <p className="text-xl md:text-2xl font-bold text-primary">
+          {price?.toLocaleString()} {currency || "MMK"}
         </p>
         {listingType === "rent" && (
           <p className="text-sm text-muted-foreground">Monthly rent</p>
@@ -76,7 +72,7 @@ export default function PropertyCard({
       </CardContent>
 
       <CardFooter className="p-4 pt-0 flex flex-col gap-4">
-        <div className="flex justify-between text-sm text-muted-foreground w-full">
+        <div className="flex flex-col md:flex-row justify-between text-sm text-muted-foreground w-full">
           <div className="flex items-center">
             <Bed className="w-4 h-4 mr-1" />
             {bedrooms} beds
@@ -90,11 +86,11 @@ export default function PropertyCard({
             {size} sqft
           </div>
         </div>
-        <div className="flex gap-2 w-full">
-          <Button asChild variant="outline" size="sm" className="flex-1">
+        <div className="flex flex-col md:flex-row gap-2 w-full">
+          <Button asChild variant="outline" size="sm" className="md:flex-1">
             <Link href={`/properties/${id}`}>View Details</Link>
           </Button>
-          <Button asChild size="sm" className="flex-1">
+          <Button asChild size="sm" className="md:flex-1">
             <Link href={`/appointments/schedule/${id}`}>
               <Calendar className="w-4 h-4 mr-1" />
               Schedule

@@ -2,7 +2,7 @@ import { Search } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import PropertyCard from "@/components/property-card";
+import PropertyCard from "@/components/propertyCard";
 import SearchFilters from "@/components/search-filters";
 import { getTop4Properties } from "@/services/property";
 

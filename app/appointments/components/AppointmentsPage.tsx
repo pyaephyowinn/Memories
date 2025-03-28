@@ -79,7 +79,7 @@ import {
 import { ColumnDef } from "@tanstack/react-table";
 import { Download, FileText, Filter, Search } from "lucide-react";
 
-export default function AppointmentPage() {
+export function AppointmentPage() {
   const columns: ColumnDef<any>[] = [
     {
       accessorKey: "id",

@@ -29,6 +29,58 @@ export async function createProperty(property: PropertyType) {
   });
 }
 
+export async function searchProperties({
+  title,
+  location,
+  priceRange,
+  minBeds,
+  minBath,
+  propertyType,
+  listingType,
+}: {
+  title?: string;
+  location?: string;
+  priceRange?: {
+    min?: number;
+    max?: number;
+  };
+  minBeds?: number;
+  minBath?: number;
+  propertyType?: string[];
+  listingType?: string;
+}) {
+  return prisma.listing.findMany({
+    where: {
+      title: {
+        contains: title,
+      },
+      city: {
+        contains: location,
+      },
+      streetAddress: {
+        contains: location,
+      },
+      state: {
+        contains: location,
+      },
+      price: {
+        gte: priceRange?.min,
+        lte: priceRange?.max,
+      },
+      bedrooms: {
+        gte: minBeds,
+      },
+      bathrooms: {
+        gte: minBath,
+      },
+      propertyType: {
+        in: propertyType,
+      },
+      listingType: listingType,
+    },
+  });
+}
+
 export async function getTop4Properties() {
   return prisma.listing.findMany({
     take: 4,

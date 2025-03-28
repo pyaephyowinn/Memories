@@ -66,7 +66,7 @@ export default function AppointmentForm({
   const date = form.watch("dateTime");
 
   const handleSubmit = (data: AppointmentType) => {
-    const updatedDate = updateHour(data.dateTime, data.hour);
+    const updatedDate = updateHour(data.dateTime, data.hour || 0);
     onSubmit({
       dateTime: updatedDate,
       message: data.message,
@@ -150,7 +150,7 @@ export default function AppointmentForm({
                     <div className="flex items-center space-x-2">
                       <Clock className="h-4 w-4 text-muted-foreground" />
                       <Select
-                        value={field.value.toString()}
+                        value={field.value?.toString()}
                         onValueChange={(val) => {
                           field.onChange(parseInt(val));
                         }}
