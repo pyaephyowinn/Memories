@@ -96,3 +96,19 @@ export type AppointmentDetailType = AppointmentType & {
   phone: string;
   property?: PropertyType;
 };
+
+export const propertyFilterSchema = z.object({
+  title: z.string().optional(),
+  location: z.string().optional(),
+  minPrice: z.number().optional(),
+  maxPrice: z.number().optional(),
+  minBeds: z.number().optional(),
+  minBath: z.number().optional(),
+  minSize: z.number().optional(),
+  maxSize: z.number().optional(),
+  listingType: z.string().optional(),
+  propertyTypes: z.array(z.string()).optional(),
+  features: z.array(z.string()).optional(),
+});
+
+export type PropertyFilterType = z.infer<typeof propertyFilterSchema>;

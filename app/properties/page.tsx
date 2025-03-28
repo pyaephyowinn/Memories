@@ -6,8 +6,9 @@ export default async function PropertySearch({
 }: {
   searchParams: { [key: string]: string };
 }) {
-  console.log("searchParams", await searchParams);
+  const search = await searchParams;
   const properties = await searchProperties({
+    ...search,
     // title: "",
     // city: "",
     // priceRange: {

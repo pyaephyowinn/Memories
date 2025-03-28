@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/form";
 import { uploadImage } from "@/services/images";
 
-import { propertyFeatures } from "@/lib/constants";
+import { propertyFeatures, propertyTypes } from "@/lib/constants";
 import { Checkbox } from "@/components/ui/checkbox";
 
 type PropertyFormProps = {
@@ -115,11 +115,11 @@ export function PropertyForm({ onSubmit, defaultValues }: PropertyFormProps) {
                           <SelectValue placeholder="Select type" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="apartment">Apartment</SelectItem>
-                          <SelectItem value="house">House</SelectItem>
-                          <SelectItem value="condo">Condo</SelectItem>
-                          <SelectItem value="townhouse">Townhouse</SelectItem>
-                          <SelectItem value="commercial">Commercial</SelectItem>
+                          {propertyTypes.map((type) => (
+                            <SelectItem value={type} className="capitalize">
+                              {type}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>

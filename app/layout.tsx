@@ -3,6 +3,7 @@ import "./globals.css";
 import { Header } from "@/components/core/Header";
 import { Footer } from "@/components/core/Footer";
 import { Toaster } from "@/components/ui/toaster";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 export const metadata: Metadata = {
   title: "Memories",
@@ -17,12 +18,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="flex flex-col min-h-screen">
-          <Header />
-          {children}
-          <Footer />
-        </div>
-        <Toaster />
+        <NuqsAdapter>
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            {children}
+            <Footer />
+          </div>
+          <Toaster />
+        </NuqsAdapter>
       </body>
     </html>
   );

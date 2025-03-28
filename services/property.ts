@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { PropertyType } from "@/lib/schemas";
+import { PropertyFilterType, PropertyType } from "@/lib/schemas";
 import { verifySession } from "@/lib/session";
 
 export async function createProperty(property: PropertyType) {
@@ -32,51 +32,57 @@ export async function createProperty(property: PropertyType) {
 export async function searchProperties({
   title,
   location,
-  priceRange,
+  minPrice,
+  maxPrice,
   minBeds,
   minBath,
-  propertyType,
+  propertyTypes,
   listingType,
-}: {
-  title?: string;
-  location?: string;
-  priceRange?: {
-    min?: number;
-    max?: number;
-  };
-  minBeds?: number;
-  minBath?: number;
-  propertyType?: string[];
-  listingType?: string;
-}) {
+  minSize,
+  maxSize,
+  features,
+}: PropertyFilterType) {
+  console.log("features", features);
   return prisma.listing.findMany({
     where: {
       title: {
-        contains: title,
+        contains: title ?? undefined,
+        mode: "insensitive",
       },
       city: {
-        contains: location,
+        contains: location ?? undefined,
+        mode: "insensitive",
       },
       streetAddress: {
-        contains: location,
+        contains: location ?? undefined,
+        mode: "insensitive",
       },
       state: {
-        contains: location,
+        contains: location ?? undefined,
+        mode: "insensitive",
       },
       price: {
-        gte: priceRange?.min,
-        lte: priceRange?.max,
+        gte: minPrice ?? undefined,
+        lte: maxPrice ?? undefined,
       },
       bedrooms: {
-        gte: minBeds,
+        gte: minBeds ?? undefined,
       },
       bathrooms: {
-        gte: minBath,
+        gte: minBath ?? undefined,
       },
-      propertyType: {
-        in: propertyType,
+      size: {
+        gte: minSize ?? undefined,
+        lte: maxSize ?? undefined,
       },
-      listingType: listingType,
+      // propertyType: {
+      //   in: propertyTypes ?? undefined,
+      // },
+      // features: {
+      //   hasEvery: features ?? [],
+      // },
+      listingType: listingType ?? undefined,
+      status: "available",
     },
   });
 }

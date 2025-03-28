@@ -8,3 +8,11 @@ export const propertyFeatures = [
   "Wifi",
   "Parking",
 ] as const;
+
+export const propertyTypes = [
+  "apartment",
+  "house",
+  "condo",
+  "townhouse",
+  "commercial",
+];
