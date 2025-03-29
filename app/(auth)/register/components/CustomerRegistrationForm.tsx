@@ -28,8 +28,12 @@ import { createCustomer } from "@/services/user";
 import { LoadingButton } from "@/components/ui/LoadingButton";
 import { Roles } from "@/lib/configs";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
 export function CustomerRegistrationForm() {
+  const router = useRouter();
+  const { toast } = useToast();
   const form = useForm<CustomerRegistrationType>({
     resolver: zodResolver(customerRegistrationSchema),
     defaultValues: {
@@ -45,10 +49,19 @@ export function CustomerRegistrationForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const onSubmit = async (data: CustomerRegistrationType) => {
-    await createCustomer({
-      ...data,
-      role: Roles.customer,
-    });
+    try {
+      await createCustomer({
+        ...data,
+        role: Roles.customer,
+      });
+      router.replace("/p");
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Registration failed",
+        description: "Something went wrong",
+      });
+    }
   };
 
   return (

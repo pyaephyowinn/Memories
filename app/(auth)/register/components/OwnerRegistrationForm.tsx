@@ -25,8 +25,12 @@ import { createOwner } from "@/services/user";
 import { LoadingButton } from "@/components/ui/LoadingButton";
 import { Roles } from "@/lib/configs";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
 export function OwnerRegistrationForm() {
+  const router = useRouter();
+  const { toast } = useToast();
   const form = useForm<OwnerRegistrationType>({
     resolver: zodResolver(ownerRegistrationSchema),
     defaultValues: {
@@ -42,10 +46,19 @@ export function OwnerRegistrationForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const onSubmit = async (data: OwnerRegistrationType) => {
-    await createOwner({
-      ...data,
-      role: Roles.owner,
-    });
+    try {
+      await createOwner({
+        ...data,
+        role: Roles.owner,
+      });
+      router.replace("/d");
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Registration failed",
+        description: "Something went wrong",
+      });
+    }
   };
 
   return (

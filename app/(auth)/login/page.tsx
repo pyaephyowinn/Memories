@@ -26,8 +26,13 @@ import {
 } from "@/components/ui/form";
 import { LoadingButton } from "@/components/ui/LoadingButton";
 import { login } from "@/services/user";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+import { Roles } from "@/lib/configs";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const { toast } = useToast();
   const form = useForm<LoginType>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -39,7 +44,21 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (data: LoginType) => {
-    await login(data.email, data.password);
+    try {
+      const user = await login(data.email, data.password);
+      if (user.role === Roles.customer) {
+        router.replace("/p");
+        return;
+      }
+      router.replace("/d");
+      return;
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Login failed",
+        description: "Incorrect email or password",
+      });
+    }
   };
 
   return (

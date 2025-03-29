@@ -74,7 +74,8 @@ export async function login(email: string, password: string) {
   }
 
   createSession(user.id);
-  redirect("/profile");
+  const { password: _, ...rest } = user;
+  return rest;
 }
 
 export async function getMe() {
