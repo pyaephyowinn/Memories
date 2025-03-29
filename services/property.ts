@@ -42,7 +42,6 @@ export async function searchProperties({
   maxSize,
   features,
 }: PropertyFilterType) {
-  console.log("features", features);
   return prisma.listing.findMany({
     where: {
       title: {

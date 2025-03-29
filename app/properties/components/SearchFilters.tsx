@@ -33,7 +33,7 @@ export function SearchFilters() {
       features: parseAsArrayOf(parseAsString).withDefault([]),
     },
     {
-      history: "push",
+      shallow: false,
     }
   );
 

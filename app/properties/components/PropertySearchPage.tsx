@@ -1,17 +1,10 @@
 "use client";
 
+import { Prisma } from "@prisma/client";
+import { ChevronLeft, ChevronRight, Filter, Grid, List } from "lucide-react";
 import { useState } from "react";
-import {
-  Bath,
-  Bed,
-  ChevronLeft,
-  ChevronRight,
-  Filter,
-  Grid,
-  List,
-  Move,
-} from "lucide-react";
 import PropertyCard from "@/components/propertyCard";
+import { PropertyListCard } from "@/components/propertyListCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -23,8 +16,6 @@ import {
 } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SearchFilters } from "./SearchFilters";
-import { Prisma } from "@prisma/client";
-import { PropertyListCard } from "@/components/propertyListCard";
 
 type PropertySearchPageProps = {
   properties: Prisma.ListingGetPayload<{}>[];
