@@ -53,6 +53,7 @@ export function OwnerRegistrationForm() {
       });
       router.replace("/d");
     } catch (error) {
+      console.log("error", error);
       toast({
         variant: "destructive",
         title: "Registration failed",

@@ -27,8 +27,9 @@ export async function createCustomer(
     },
   });
 
-  createSession(user.id);
-  redirect("/profile");
+  await createSession(user.id);
+  const { password: _, ...rest } = user;
+  return rest;
 }
 
 export async function createOwner(
@@ -54,8 +55,9 @@ export async function createOwner(
     },
   });
 
-  createSession(user.id);
-  redirect("/d");
+  await createSession(user.id);
+  const { password: _, ...rest } = user;
+  return rest;
 }
 
 export async function login(email: string, password: string) {
@@ -73,7 +75,7 @@ export async function login(email: string, password: string) {
     throw new Error("Invalid password");
   }
 
-  createSession(user.id);
+  await createSession(user.id);
   const { password: _, ...rest } = user;
   return rest;
 }
