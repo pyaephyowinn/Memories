@@ -3,14 +3,34 @@
 import { PropertyDetailType, PropertyType } from "@/lib/schemas";
 import { PropertyForm } from "./PropertyForm";
 import { updateProperty } from "@/services/property";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
 export function EditPropertyPage({
   property,
 }: {
   property?: PropertyDetailType;
 }) {
+  const router = useRouter();
+  const { toast } = useToast();
+
   const handleSubmit = async (data: PropertyType) => {
-    await updateProperty(property?.id || 0, data);
+    try {
+      console.log("triggered");
+      await updateProperty(property?.id || 0, data);
+
+      router.push("/d");
+      toast({
+        title: "Success",
+        description: "Property updated successfully.",
+      });
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Something went wrong",
+      });
+    }
   };
 
   return (

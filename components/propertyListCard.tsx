@@ -10,8 +10,8 @@ type PropertyListCardProps = {
 
 export function PropertyListCard({ property }: PropertyListCardProps) {
   return (
-    <Card className="overflow-hidden">
-      <div className="flex flex-col sm:flex-row">
+    <Card className="overflow-hidden h-64">
+      <div className="flex flex-col sm:flex-row h-full">
         <div className="sm:w-1/3">
           <img
             src={property.images?.[0] || "/placeholder.svg"}
@@ -35,7 +35,7 @@ export function PropertyListCard({ property }: PropertyListCardProps) {
                   <p className="text-sm text-muted-foreground">Monthly rent</p>
                 )}
               </div>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-muted-foreground mb-4 line-clamp-3">
                 {property.description}
               </p>
             </div>

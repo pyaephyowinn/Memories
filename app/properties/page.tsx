@@ -9,17 +9,8 @@ export default async function PropertySearch({
   const search = await searchParams;
   const properties = await searchProperties({
     ...search,
-    // title: "",
-    // city: "",
-    // priceRange: {
-    //   min: 0,
-    //   max: 99999,
-    // },
-    // minBeds: 0,
-    // minBath: 0,
-    // propertyType: [],
-    // listingType: "",
+    propertyTypes: search.propertyTypes?.split(","),
+    features: search.features?.split(",") || [],
   });
-  console.log("properties", properties);
   return <PropertySearchPage properties={properties} />;
 }

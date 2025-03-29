@@ -116,7 +116,11 @@ export function PropertyForm({ onSubmit, defaultValues }: PropertyFormProps) {
                         </SelectTrigger>
                         <SelectContent>
                           {propertyTypes.map((type) => (
-                            <SelectItem value={type} className="capitalize">
+                            <SelectItem
+                              key={type}
+                              value={type}
+                              className="capitalize"
+                            >
                               {type}
                             </SelectItem>
                           ))}

@@ -75,12 +75,12 @@ export async function searchProperties({
         gte: minSize ?? undefined,
         lte: maxSize ?? undefined,
       },
-      // propertyType: {
-      //   in: propertyTypes ?? undefined,
-      // },
-      // features: {
-      //   hasEvery: features ?? [],
-      // },
+      propertyType: {
+        in: propertyTypes ?? undefined,
+      },
+      features: {
+        hasEvery: features ?? [],
+      },
       listingType: listingType ?? undefined,
       status: "available",
     },

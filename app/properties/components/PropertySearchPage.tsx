@@ -34,7 +34,7 @@ export function PropertySearchPage({ properties }: PropertySearchPageProps) {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   return (
-    <div className="container mx-auto py-6 flex flex-col md:flex-row gap-6">
+    <div className="container py-6 flex flex-col md:flex-row gap-6">
       {/* Mobile Filter Button */}
       <Sheet>
         <SheetTrigger asChild>
