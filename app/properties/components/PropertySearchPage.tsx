@@ -1,8 +1,9 @@
 "use client";
 
 import { Prisma } from "@prisma/client";
-import { ChevronLeft, ChevronRight, Filter, Grid, List } from "lucide-react";
+import { Filter, Grid, List } from "lucide-react";
 import { useState } from "react";
+import { useQueryState } from "nuqs";
 import PropertyCard from "@/components/propertyCard";
 import { PropertyListCard } from "@/components/propertyListCard";
 import { Button } from "@/components/ui/button";
@@ -16,13 +17,24 @@ import {
 } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SearchFilters } from "./SearchFilters";
+import { Pagination } from "@/components/core/Pagination";
 
 type PropertySearchPageProps = {
   properties: Prisma.ListingGetPayload<{}>[];
+  totalCount: number;
 };
 
-export function PropertySearchPage({ properties }: PropertySearchPageProps) {
+export function PropertySearchPage({
+  properties,
+  totalCount,
+}: PropertySearchPageProps) {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [order, setOrder] = useQueryState("order", {
+    shallow: false,
+    defaultValue: "recommended",
+  });
+
+  const totalPages = Math.ceil(totalCount / 12);
 
   return (
     <div className="container py-6 flex flex-col md:flex-row gap-6">
@@ -63,7 +75,7 @@ export function PropertySearchPage({ properties }: PropertySearchPageProps) {
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <Select defaultValue="recommended">
+              <Select value={order} onValueChange={setOrder}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
@@ -74,7 +86,7 @@ export function PropertySearchPage({ properties }: PropertySearchPageProps) {
                   <SelectItem value="newest">Newest</SelectItem>
                 </SelectContent>
               </Select>
-              <div className="flex border rounded-md">
+              <div className="hidden md:flex border rounded-md">
                 <Button
                   variant={viewMode === "grid" ? "default" : "ghost"}
                   size="icon"
@@ -112,31 +124,7 @@ export function PropertySearchPage({ properties }: PropertySearchPageProps) {
           )}
 
           <div className="flex justify-center mt-6">
-            <nav className="flex items-center gap-1">
-              <Button variant="outline" size="icon" disabled>
-                <ChevronLeft className="h-4 w-4" />
-                <span className="sr-only">Previous page</span>
-              </Button>
-              <Button variant="outline" size="sm" className="h-8 w-8">
-                1
-              </Button>
-              <Button variant="ghost" size="sm" className="h-8 w-8">
-                2
-              </Button>
-              <Button variant="ghost" size="sm" className="h-8 w-8">
-                3
-              </Button>
-              <Button variant="ghost" size="sm" className="h-8 w-8">
-                4
-              </Button>
-              <Button variant="ghost" size="sm" className="h-8 w-8">
-                5
-              </Button>
-              <Button variant="outline" size="icon">
-                <ChevronRight className="h-4 w-4" />
-                <span className="sr-only">Next page</span>
-              </Button>
-            </nav>
+            <Pagination totalPages={totalPages} />
           </div>
         </div>
       </div>
