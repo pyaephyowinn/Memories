@@ -12,7 +12,7 @@ const RadioGroup = React.forwardRef<
     React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>,
     "defaultValue"
   > & {
-    defaultValue: number;
+    defaultValue: number | string;
   }
 >(({ className, ...props }, ref) => {
   return (
@@ -32,7 +32,7 @@ const RadioGroupItem = React.forwardRef<
     React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>,
     "value"
   > & {
-    value: number;
+    value: number | string;
   }
 >(({ className, ...props }, ref) => {
   return (

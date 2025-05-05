@@ -11,6 +11,9 @@ export default async function PropertySearch({
     ...search,
     propertyTypes: search.propertyTypes?.split(","),
     features: search.features?.split(",") || [],
+    minBeds: search.minBeds ? parseInt(search.minBeds) : undefined,
+    minBath: search.minBath ? parseInt(search.minBath) : undefined,
   });
+
   return <PropertySearchPage properties={properties} />;
 }

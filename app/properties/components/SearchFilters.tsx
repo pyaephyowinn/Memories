@@ -15,7 +15,11 @@ import { propertyFilterSchema, PropertyFilterType } from "@/lib/schemas";
 import {
   propertyFeatures,
   propertyTypes as propertyTypesConst,
+  listingTypes,
 } from "@/lib/constants";
+import React from "react";
+import { cn } from "@/lib/utils";
+import { Circle } from "lucide-react";
 
 export function SearchFilters() {
   const [values, setValues] = useQueryStates(
@@ -37,13 +41,14 @@ export function SearchFilters() {
     }
   );
 
-  const { register, handleSubmit, reset, control } =
+  const { register, handleSubmit, reset, control, formState, watch } =
     useForm<PropertyFilterType>({
       defaultValues: values,
       resolver: zodResolver(propertyFilterSchema),
     });
 
   const onSubmit = (data: PropertyFilterType) => {
+    console.log(data);
     setValues(data);
   };
 
@@ -63,6 +68,12 @@ export function SearchFilters() {
       features: [],
     });
   };
+
+  const [listingType] = watch(["listingType"]);
+
+  console.log({
+    listingType,
+  });
 
   return (
     <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
@@ -93,6 +104,38 @@ export function SearchFilters() {
             />
           </div>
         </div>
+      </div>
+
+      <div>
+        <h3 className="font-medium mb-2">Listing Type</h3>
+        <Controller
+          control={control}
+          name="listingType"
+          render={({ field }) => (
+            <RadioGroup
+              defaultValue={""}
+              value={field.value?.toString() || ""}
+              onValueChange={(value) => {
+                field.onChange(value);
+              }}
+            >
+              <div className="flex flex-wrap gap-2">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={""} id="bed-any" />
+                  <Label htmlFor="bed-any">Any</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={"sale"} id="sale" />
+                  <Label htmlFor="sale">Sale</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={"rent"} id="rent" />
+                  <Label htmlFor="rent">Rent</Label>
+                </div>
+              </div>
+            </RadioGroup>
+          )}
+        />
       </div>
 
       <div>
@@ -128,60 +171,78 @@ export function SearchFilters() {
 
       <div>
         <h3 className="font-medium mb-2">Bedrooms</h3>
-        <RadioGroup
-          defaultValue={0}
-          {...register("minBeds", { valueAsNumber: true })}
-        >
-          <div className="flex flex-wrap gap-2">
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value={0} id="bed-any" />
-              <Label htmlFor="bed-any">Any</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value={1} id="bed-1" />
-              <Label htmlFor="bed-1">1+</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value={2} id="bed-2" />
-              <Label htmlFor="bed-2">2+</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value={3} id="bed-3" />
-              <Label htmlFor="bed-3">3+</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value={4} id="bed-4" />
-              <Label htmlFor="bed-4">4+</Label>
-            </div>
-          </div>
-        </RadioGroup>
+        <Controller
+          control={control}
+          name="minBeds"
+          render={({ field }) => (
+            <RadioGroup
+              defaultValue={0}
+              value={field.value?.toString() || ""}
+              onValueChange={(value) => {
+                field.onChange(Number(value));
+              }}
+            >
+              <div className="flex flex-wrap gap-2">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={"0"} id="bed-any" />
+                  <Label htmlFor="bed-any">Any</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={"1"} id="bed-1" />
+                  <Label htmlFor="bed-1">1+</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={"2"} id="bed-2" />
+                  <Label htmlFor="bed-2">2+</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={"3"} id="bed-3" />
+                  <Label htmlFor="bed-3">3+</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={"4"} id="bed-4" />
+                  <Label htmlFor="bed-4">4+</Label>
+                </div>
+              </div>
+            </RadioGroup>
+          )}
+        />
       </div>
 
       <div>
         <h3 className="font-medium mb-2">Bathrooms</h3>
-        <RadioGroup
-          defaultValue={0}
-          {...register("minBath", { valueAsNumber: true })}
-        >
-          <div className="flex flex-wrap gap-2">
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value={0} id="bath-any" />
-              <Label htmlFor="bath-any">Any</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value={1} id="bath-1" />
-              <Label htmlFor="bath-1">1+</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value={2} id="bath-2" />
-              <Label htmlFor="bath-2">2+</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value={3} id="bath-3" />
-              <Label htmlFor="bath-3">3+</Label>
-            </div>
-          </div>
-        </RadioGroup>
+        <Controller
+          control={control}
+          name="minBath"
+          render={({ field }) => (
+            <RadioGroup
+              defaultValue={0}
+              value={field.value?.toString() || ""}
+              onValueChange={(value) => {
+                field.onChange(Number(value));
+              }}
+            >
+              <div className="flex flex-wrap gap-2">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={"0"} id="bath-any" />
+                  <Label htmlFor="bath-any">Any</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={"1"} id="bath-1" />
+                  <Label htmlFor="bath-1">1+</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={"2"} id="bath-2" />
+                  <Label htmlFor="bath-2">2+</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={"3"} id="bath-3" />
+                  <Label htmlFor="bath-3">3+</Label>
+                </div>
+              </div>
+            </RadioGroup>
+          )}
+        />
       </div>
 
       <div>

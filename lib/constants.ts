@@ -16,3 +16,5 @@ export const propertyTypes = [
   "townhouse",
   "commercial",
 ];
+
+export const listingTypes = ["sale", "rent"] as const;

@@ -66,9 +66,10 @@ export default function PropertyCard({
         <p className="text-xl md:text-2xl font-bold text-primary">
           {price?.toLocaleString()} {currency || "MMK"}
         </p>
-        {listingType === "rent" && (
-          <p className="text-sm text-muted-foreground">Monthly rent</p>
-        )}
+
+        <p className="text-sm text-muted-foreground">
+          {listingType === "rent" ? "Monthly rent" : "Sale"}
+        </p>
       </CardContent>
 
       <CardFooter className="p-4 pt-0 flex flex-col gap-4">

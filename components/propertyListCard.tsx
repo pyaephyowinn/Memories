@@ -31,11 +31,12 @@ export function PropertyListCard({ property }: PropertyListCardProps) {
                 <p className="text-2xl font-bold text-primary">
                   {property.price.toLocaleString()} {property.currency}
                 </p>
-                {property.listingType === "rent" && (
-                  <p className="text-sm text-muted-foreground">Monthly rent</p>
-                )}
+
+                <p className="text-sm text-muted-foreground">
+                  {property.listingType === "rent" ? "Monthly rent" : "Sale "}
+                </p>
               </div>
-              <p className="text-muted-foreground mb-4 line-clamp-3">
+              <p className="text-muted-foreground mb-4 line-clamp-2">
                 {property.description}
               </p>
             </div>
