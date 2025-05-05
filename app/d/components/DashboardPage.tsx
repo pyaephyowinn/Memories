@@ -7,7 +7,6 @@ import {
   PlusCircle,
   Calendar,
   DollarSign,
-  BarChart3,
   CheckCircle,
   XCircle,
 } from "lucide-react";
@@ -106,10 +105,6 @@ export function DashboardPage({
               <DollarSign className="mr-2 h-4 w-4" />
               Transactions
             </TabsTrigger>
-            <TabsTrigger value="analytics">
-              <BarChart3 className="mr-2 h-4 w-4" />
-              Analytics
-            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="properties" className="space-y-4">
@@ -176,7 +171,7 @@ export function DashboardPage({
           <TabsContent value="appointments" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>Upcoming Appointments</CardTitle>
+                <CardTitle>Your Appointments</CardTitle>
                 <CardDescription>
                   Manage your property viewing appointments
                 </CardDescription>
@@ -344,24 +339,6 @@ export function DashboardPage({
                   <Link href="/transactions">View All Transactions</Link>
                 </Button>
               </CardFooter>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="analytics" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Property Analytics</CardTitle>
-                <CardDescription>
-                  Track performance metrics for your properties
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="h-[300px] flex items-center justify-center border rounded-md">
-                  <p className="text-muted-foreground">
-                    Analytics charts would be displayed here
-                  </p>
-                </div>
-              </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
