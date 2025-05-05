@@ -1,4 +1,4 @@
-import { getAppointmentsByCustomer } from "@/services/appointment";
+import { getMyAppointments } from "@/services/appointment";
 import { AppointmentPage } from "./components/AppointmentsPage";
 
 export default async function Appointment({
@@ -8,7 +8,7 @@ export default async function Appointment({
 }) {
   const { page = "1", status = "all" } = await searchParams;
 
-  const { appointments, total } = await getAppointmentsByCustomer({
+  const { appointments, total } = await getMyAppointments({
     page: parseInt(page),
     status,
   });

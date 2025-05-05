@@ -18,28 +18,11 @@ export async function Header() {
       <nav className="ml-auto hidden md:flex items-center gap-4 sm:gap-6">
         <Link
           className="text-sm font-medium hover:underline underline-offset-4"
-          href="/properties?status=available&type=buy"
+          href="/properties"
         >
-          Buy
+          Search Properties
         </Link>
-        <Link
-          className="text-sm font-medium hover:underline underline-offset-4"
-          href="/properties?status=available&type=rent"
-        >
-          Rent
-        </Link>
-        <Link
-          className="text-sm font-medium hover:underline underline-offset-4"
-          href="/sell"
-        >
-          Sell
-        </Link>
-        <Link
-          className="text-sm font-medium hover:underline underline-offset-4"
-          href="/about"
-        >
-          About
-        </Link>
+
         {session?.userId ? (
           <Link
             className="text-sm font-medium hover:underline underline-offset-4"

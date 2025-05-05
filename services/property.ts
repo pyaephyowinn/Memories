@@ -213,7 +213,7 @@ export async function getDashboardProperties() {
       },
       where: {
         listing: {
-          ownerId: session.userId,
+          ownerId: owner.id,
         },
       },
     }),

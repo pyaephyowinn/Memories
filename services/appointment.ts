@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 import { AppointmentType } from "@/lib/schemas";
 import { verifySession } from "@/lib/session";
 import { Prisma } from "@prisma/client";
+import { redirect } from "next/navigation";
 
 export async function createAppointment(
   data: Omit<AppointmentType, "hour"> & { listingId: number }
@@ -62,7 +63,7 @@ export async function getAppointment(id: number) {
   });
 }
 
-export async function getAppointmentsByCustomer({
+export async function getMyAppointments({
   page,
   status,
 }: {
@@ -72,12 +73,22 @@ export async function getAppointmentsByCustomer({
   const session = await verifySession();
 
   if (!session) {
-    throw new Error("Unauthorized");
+    return redirect("/login");
+  }
+
+  const owner = await prisma.owner.findUnique({
+    where: {
+      userId: session.userId,
+    },
+  });
+
+  if (!owner) {
+    return redirect("/login");
   }
 
   const where: Prisma.AppointmentWhereInput = {
-    customer: {
-      userId: session.userId,
+    listing: {
+      ownerId: owner.id,
     },
   };
 
