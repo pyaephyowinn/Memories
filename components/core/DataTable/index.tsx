@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -34,6 +34,7 @@ export function DataTable<TData, TValue>({
   data,
   total,
 }: DataTableProps<TData, TValue>) {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] =
@@ -43,6 +44,14 @@ export function DataTable<TData, TValue>({
   const rowsPerPage = parseInt(
     (searchParams.get("pageSize") as string) || "10"
   );
+
+  const handlePrevious = () => {
+    router.push(`?page=${currentPage - 1}`);
+  };
+
+  const handleNext = () => {
+    router.push(`?page=${currentPage + 1}`);
+  };
 
   const table = useReactTable({
     data,
@@ -120,13 +129,23 @@ export function DataTable<TData, TValue>({
       <div className="flex items-center justify-between mt-4">
         <div className="text-sm text-muted-foreground">
           Showing {data.length > rowsPerPage ? rowsPerPage : data.length} of{" "}
-          {total} transactions
+          {total} {total === 1 ? "transaction" : "transactions"}
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" disabled>
+          <Button
+            onClick={handlePrevious}
+            variant="outline"
+            size="sm"
+            disabled={currentPage <= 1}
+          >
             Previous
           </Button>
-          <Button variant="outline" size="sm">
+          <Button
+            onClick={handleNext}
+            variant="outline"
+            size="sm"
+            disabled={currentPage * rowsPerPage >= total}
+          >
             Next
           </Button>
         </div>

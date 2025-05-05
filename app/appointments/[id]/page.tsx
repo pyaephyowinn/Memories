@@ -13,6 +13,5 @@ export default async function AppointmentDetail({
     return <div>Appointment not found</div>;
   }
 
-  console.log("appointment", appointment);
   return <AppointmentDetailPage appointment={appointment} />;
 }

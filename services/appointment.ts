@@ -3,6 +3,7 @@
 import prisma from "@/lib/prisma";
 import { AppointmentType } from "@/lib/schemas";
 import { verifySession } from "@/lib/session";
+import { Prisma } from "@prisma/client";
 
 export async function createAppointment(
   data: Omit<AppointmentType, "hour"> & { listingId: number }
@@ -61,15 +62,52 @@ export async function getAppointment(id: number) {
   });
 }
 
-export async function getAppointmentsByCustomer(customerId: number) {
-  return prisma.appointment.findMany({
-    where: {
-      customerId,
+export async function getAppointmentsByCustomer({
+  page,
+  status,
+}: {
+  page: number;
+  status: string;
+}) {
+  const session = await verifySession();
+
+  if (!session) {
+    throw new Error("Unauthorized");
+  }
+
+  const where: Prisma.AppointmentWhereInput = {
+    customer: {
+      userId: session.userId,
     },
-    include: {
-      listing: true, // Include listing details in the response
-    },
-  });
+  };
+
+  if (status !== "all") {
+    where.status = status;
+  }
+
+  const [appointments, total] = await Promise.all([
+    prisma.appointment.findMany({
+      where,
+      include: {
+        listing: true,
+        customer: {
+          include: {
+            user: true,
+          },
+        },
+      },
+      skip: (page - 1) * 10,
+      take: 10,
+    }),
+    prisma.appointment.count({
+      where,
+    }),
+  ]);
+
+  return {
+    appointments,
+    total,
+  };
 }
 
 export async function updateAppointment(

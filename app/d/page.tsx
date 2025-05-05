@@ -1,4 +1,4 @@
-import { getDashboardProperties, getTop4Properties } from "@/services/property";
+import { getDashboardProperties } from "@/services/property";
 import { DashboardPage } from "./components/DashboardPage";
 
 export default async function Dashboard() {

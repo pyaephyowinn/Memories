@@ -68,11 +68,16 @@ export function AppointmentDetailPage({
   return (
     <div className="flex-1 mx-auto max-w-2xl space-y-6 container py-4 md:py-8">
       <div className="flex items-center gap-2">
-        <Button asChild variant="ghost" size="icon">
-          <Link href={`/properties/1`}>
+        <Button
+          asChild
+          variant="ghost"
+          size="icon"
+          onClick={() => router.back()}
+        >
+          <div>
             <ArrowLeft className="h-4 w-4" />
-            <span className="sr-only">Back to property</span>
-          </Link>
+            <span className="sr-only">Back</span>
+          </div>
         </Button>
         <h1 className="text-3xl font-bold tracking-tight">
           Appointment Details
@@ -102,7 +107,11 @@ export function AppointmentDetailPage({
                       : "secondary"
                   }
                 >
-                  {appointment.status}
+                  {appointment.status === "pending"
+                    ? "Pending"
+                    : appointment.status === "declined"
+                    ? "Declined"
+                    : "Accepted"}
                 </Badge>
               </div>
             </div>
@@ -128,10 +137,14 @@ export function AppointmentDetailPage({
           </div>
         </CardContent>
         <CardFooter className="flex gap-4 justify-end">
-          <Button onClick={handleAccept}>Accept</Button>
-          <Button variant="destructive" onClick={handleDecline}>
-            Decline
-          </Button>
+          {appointment.status === "pending" && (
+            <>
+              <Button onClick={handleAccept}>Accept</Button>
+              <Button variant="destructive" onClick={handleDecline}>
+                Decline
+              </Button>
+            </>
+          )}
         </CardFooter>
       </Card>
     </div>

@@ -205,13 +205,16 @@ export function DashboardPage({
                         <TableCell>
                           <Badge
                             variant={
-                              appointment.status === "confirmed"
-                                ? "default"
+                              appointment.status === "declined"
+                                ? "destructive"
                                 : "outline"
                             }
                           >
-                            {appointment.status.charAt(0).toUpperCase() +
-                              appointment.status.slice(1)}
+                            {appointment.status === "accept"
+                              ? "Accepted"
+                              : appointment.status === "pending"
+                              ? "Pending"
+                              : "Declined"}
                           </Badge>
                         </TableCell>
                         <TableCell className="text-right">

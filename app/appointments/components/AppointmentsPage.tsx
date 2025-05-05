@@ -1,74 +1,8 @@
 "use client";
 
-const dummy = [
-  {
-    id: "TR-001",
-    date: "Mar 15, 2024",
-    property: "Luxury Penthouse with View",
-    client: "Robert Wilson",
-    type: "sale",
-    amount: "$1,200,000",
-    status: "completed",
-  },
-  {
-    id: "TR-002",
-    date: "Mar 10, 2024",
-    property: "Cozy Studio Near Park",
-    client: "Emma Davis",
-    type: "rental",
-    amount: "$1,500",
-    status: "completed",
-  },
-  {
-    id: "TR-003",
-    date: "Mar 5, 2024",
-    property: "Modern Apartment in Downtown",
-    client: "James Taylor",
-    type: "installment",
-    amount: "$5,000",
-    status: "completed",
-  },
-  {
-    id: "TR-004",
-    date: "Mar 1, 2024",
-    property: "Spacious Family Home",
-    client: "Michael Brown",
-    type: "commission",
-    amount: "$16,500",
-    status: "pending",
-  },
-  {
-    id: "TR-005",
-    date: "Feb 25, 2024",
-    property: "Modern Apartment in Downtown",
-    client: "James Taylor",
-    type: "installment",
-    amount: "$5,000",
-    status: "completed",
-  },
-  {
-    id: "TR-006",
-    date: "Feb 20, 2024",
-    property: "Cozy Studio Near Park",
-    client: "Emma Davis",
-    type: "rental",
-    amount: "$1,500",
-    status: "failed",
-  },
-  {
-    id: "TR-007",
-    date: "Feb 15, 2024",
-    property: "Modern Apartment in Downtown",
-    client: "James Taylor",
-    type: "installment",
-    amount: "$5,000",
-    status: "completed",
-  },
-];
-
 import { DataTable } from "@/components/core/DataTable";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -76,39 +10,81 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { formatDate } from "@/lib/date";
+import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
-import { Download, FileText, Filter, Search } from "lucide-react";
+import Link from "next/link";
+import { useQueryState } from "nuqs";
 
-export function AppointmentPage() {
-  const columns: ColumnDef<any>[] = [
+type Appointment = Prisma.AppointmentGetPayload<{
+  include: { listing: true; customer: { include: { user: true } } };
+}>;
+
+export function AppointmentPage({
+  appointments,
+  total,
+}: {
+  appointments: Appointment[];
+  total: number;
+}) {
+  const [status, setStatus] = useQueryState("status", {
+    defaultValue: "all",
+  });
+
+  const columns: ColumnDef<Appointment>[] = [
     {
-      accessorKey: "id",
-      header: "ID",
-    },
-    {
-      accessorKey: "date",
+      accessorKey: "dateTime",
       header: "Date",
+      cell: ({ row }) => {
+        return <div>{formatDate(row.original.dateTime)}</div>;
+      },
     },
     {
-      accessorKey: "property",
+      accessorKey: "listing.title",
       header: "Property",
     },
     {
-      accessorKey: "client",
+      accessorKey: "customer.user.username",
       header: "Client",
     },
     {
-      accessorKey: "type",
-      header: "Type",
+      accessorKey: "status",
+      header: "Status",
+      cell: ({ row }) => {
+        return (
+          <Badge
+            variant={
+              row.original.status === "declined" ? "destructive" : "outline"
+            }
+          >
+            {row.original.status === "accept"
+              ? "Accepted"
+              : row.original.status === "pending"
+              ? "Pending"
+              : "Declined"}
+          </Badge>
+        );
+      },
     },
     {
-      accessorKey: "amount",
-      header: "Amount",
+      accessorKey: "message",
+      header: "Message",
+    },
+    {
+      accessorKey: "id",
+      header: "Actions",
+      cell: ({ row }) => {
+        return (
+          <Button asChild variant="ghost" size="sm">
+            <Link href={`/appointments/${row.original.id}`}>View</Link>
+          </Button>
+        );
+      },
     },
   ];
 
   return (
-    <div className="container mx-auto flex flex-col gap-6 py-4 md:py-8">
+    <div className="flex-1 container mx-auto flex flex-col gap-6 py-4 md:py-8">
       <div className="flex flex-col md:flex-row justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Appointments</h1>
@@ -116,45 +92,30 @@ export function AppointmentPage() {
             View and manage your appointments
           </p>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline">
-            <FileText className="mr-2 h-4 w-4" />
-            Generate Report
-          </Button>
-          <Button>
-            <Download className="mr-2 h-4 w-4" />
-            Export
-          </Button>
-        </div>
-      </div>
 
-      <div className="flex flex-col md:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Search transactions..." className="pl-8" />
-        </div>
         <div className="flex gap-2">
-          <Select>
+          <Select
+            value={status}
+            onValueChange={(value) =>
+              setStatus(value, {
+                shallow: false,
+              })
+            }
+          >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Transaction Type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
-              <SelectItem value="sale">Sale</SelectItem>
-              <SelectItem value="rental">Rental</SelectItem>
-              <SelectItem value="installment">Installment</SelectItem>
-              <SelectItem value="commission">Commission</SelectItem>
+              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="pending">Pending</SelectItem>
+              <SelectItem value="accepted">Accepted</SelectItem>
+              <SelectItem value="declined">Declined</SelectItem>
             </SelectContent>
           </Select>
-
-          <Button variant="outline" size="icon">
-            <Filter className="h-4 w-4" />
-            <span className="sr-only">Filter</span>
-          </Button>
         </div>
       </div>
 
-      <DataTable data={dummy} total={dummy.length} columns={columns} />
+      <DataTable data={appointments} total={total} columns={columns} />
     </div>
   );
 }

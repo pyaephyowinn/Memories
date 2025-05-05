@@ -169,6 +169,7 @@ export async function getPropertiesByOwner() {
 }
 
 export async function getDashboardProperties() {
+  const session = await verifySession();
   const [properties, appointments] = await Promise.all([
     prisma.listing.findMany({
       take: 4,
@@ -181,6 +182,11 @@ export async function getDashboardProperties() {
           include: {
             user: true,
           },
+        },
+      },
+      where: {
+        listing: {
+          ownerId: session.userId,
         },
       },
     }),
