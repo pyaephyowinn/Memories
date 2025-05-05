@@ -11,33 +11,26 @@ export default async function Home() {
 
   return (
     <div className="flex-1">
-      <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-black">
-        <div className="container mx-auto">
+      <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-hero-pattern bg-cover bg-center relative">
+        <div className="absolute inset-0 bg-black opacity-70 z-0"></div>
+        <div className="container mx-auto z-20 relative">
           <div className="flex flex-col items-center space-y-4 text-center">
             <div className="space-y-2">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none text-white">
                 Find Your Dream Home
               </h1>
-              <p className="mx-auto max-w-[700px] text-gray-300 md:text-xl">
+              <p className="mx-auto max-w-[700px] text-gray-100 md:text-xl pb-8">
                 Discover the perfect property for you. Whether you're looking to
                 buy, rent, or sell, we've got you covered.
               </p>
-            </div>
-            <div className="w-full max-w-3xl space-y-2">
-              <form className="flex flex-col space-y-4">
-                <div className="flex space-x-2">
-                  <Input
-                    className="max-w-lg flex-1"
-                    placeholder="Enter a city, neighborhood, or ZIP code"
-                    type="text"
-                  />
-                  <Button type="submit">
-                    <Search className="h-4 w-4 mr-2" />
-                    Search
-                  </Button>
-                </div>
-                <SearchFilters />
-              </form>
+
+              <Button
+                asChild
+                variant="outline"
+                className="bg-white text-black rounded-full"
+              >
+                <Link href="/properties">Search Properties</Link>
+              </Button>
             </div>
           </div>
         </div>
