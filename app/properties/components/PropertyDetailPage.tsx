@@ -48,45 +48,7 @@ export function PropertyDetailPage({
   const router = useRouter();
   const [liked, setLiked] = useState(false);
 
-  // Mock property data
-  const property_ = {
-    id: "params.id",
-    title: "Modern Apartment in Downtown",
-    price: "$350,000",
-    description:
-      "This beautiful modern apartment is located in the heart of downtown. It features an open floor plan with high ceilings, large windows that provide plenty of natural light, and premium finishes throughout. The kitchen is equipped with stainless steel appliances, quartz countertops, and custom cabinetry. The spacious living room opens to a private balcony with city views. The primary bedroom has a walk-in closet and an en-suite bathroom with a double vanity and a walk-in shower. The second bedroom is perfect for guests or a home office. Additional features include in-unit laundry, central air conditioning, and one assigned parking space in the secure garage.",
-    location: "123 Main St, Downtown, New York, NY 10001",
-    beds: 2,
-    baths: 2,
-    sqft: 1200,
-    status: "available",
-    type: "buy",
-    yearBuilt: 2018,
-    images: [
-      "/placeholder.svg?height=600&width=800",
-      "/placeholder.svg?height=600&width=800",
-      "/placeholder.svg?height=600&width=800",
-      "/placeholder.svg?height=600&width=800",
-    ],
-    features: [
-      "Central Air Conditioning",
-      "In-unit Laundry",
-      "Balcony",
-      "Stainless Steel Appliances",
-      "Quartz Countertops",
-      "Hardwood Floors",
-      "Walk-in Closet",
-      "High Ceilings",
-      "Elevator Building",
-      "Secure Parking",
-    ],
-    agent: {
-      name: "Sarah Johnson",
-      phone: "(555) 123-4567",
-      email: "sarah.johnson@acmerealestate.com",
-      image: "/placeholder.svg?height=200&width=200",
-    },
-  };
+  const location = `${property.streetAddress}, ${property.city}, ${property.state}`;
 
   return (
     <div className="container mx-auto flex flex-col gap-4 md:gap-8 py-4 md:py-8">
@@ -105,7 +67,7 @@ export function PropertyDetailPage({
 
             <div className="flex items-center text-sm text-muted-foreground">
               <MapPin className="h-4 w-4 mr-1" />
-              {property_.location}
+              {location}
             </div>
           </div>
           <h1 className="text-3xl font-bold tracking-tight mt-2">
@@ -268,51 +230,6 @@ export function PropertyDetailPage({
         </div>
 
         <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Contact Agent</CardTitle>
-              <CardDescription>
-                Get in touch with the listing agent
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center gap-4">
-                <UserAvatar
-                  image=""
-                  name={property.owner?.user?.username || ""}
-                />
-                <div>
-                  <p className="font-medium">
-                    {property.owner?.user?.username}
-                  </p>
-                  <p className="text-sm text-muted-foreground">Listing Agent</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 gap-2">
-                <Button variant="outline" className="justify-start">
-                  <Phone className="h-4 w-4 mr-2" />
-                  {property.owner?.user?.phone}
-                </Button>
-                <Button variant="outline" className="justify-start">
-                  <Mail className="h-4 w-4 mr-2" />
-                  {property.owner?.user?.email}
-                </Button>
-              </div>
-
-              <div className="space-y-2">
-                <Textarea
-                  placeholder="Type your message here..."
-                  className="min-h-[100px]"
-                />
-                <Button className="w-full">
-                  <MessageSquare className="h-4 w-4 mr-2" />
-                  Send Message
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
           <Card>
             <CardHeader>
               <CardTitle>Schedule a Viewing</CardTitle>

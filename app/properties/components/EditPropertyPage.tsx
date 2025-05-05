@@ -16,10 +16,9 @@ export function EditPropertyPage({
 
   const handleSubmit = async (data: PropertyType) => {
     try {
-      console.log("triggered");
       await updateProperty(property?.id || 0, data);
 
-      router.push("/d");
+      router.back();
       toast({
         title: "Success",
         description: "Property updated successfully.",

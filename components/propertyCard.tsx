@@ -1,6 +1,6 @@
 "use client";
 
-import { Bed, Bath, Move, MapPin, Calendar } from "lucide-react";
+import { Bed, Bath, Move, MapPin, Calendar, Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -13,6 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Prisma } from "@prisma/client";
+import { DeletePropertyDialog } from "./DeletePropertyDialog";
 
 export default function PropertyCard({
   id,
@@ -26,7 +27,10 @@ export default function PropertyCard({
   listingType,
   city,
   currency,
-}: Prisma.ListingGetPayload<{}>) {
+  edit,
+}: Prisma.ListingGetPayload<{}> & {
+  edit?: boolean;
+}) {
   return (
     <Card className="overflow-hidden">
       <CardHeader className="p-0 relative">
@@ -87,17 +91,31 @@ export default function PropertyCard({
             {size} sqft
           </div>
         </div>
-        <div className="flex flex-col md:flex-row gap-2 w-full">
-          <Button asChild variant="outline" size="sm" className="md:flex-1">
-            <Link href={`/properties/${id}`}>View Details</Link>
-          </Button>
-          <Button asChild size="sm" className="md:flex-1">
-            <Link href={`/appointments/schedule/${id}`}>
-              <Calendar className="w-4 h-4 mr-1" />
-              Schedule
-            </Link>
-          </Button>
-        </div>
+
+        {edit ? (
+          <div className="flex flex-col md:flex-row gap-2 w-full">
+            <Button asChild variant="outline" size="sm" className="md:flex-1">
+              <Link href={`/properties/${id}/edit`}>Edit</Link>
+            </Button>
+            <DeletePropertyDialog id={id} />
+            {/* <Button size="sm" className="md:flex-1" variant="destructive">
+              <Trash className="w-4 h-4 mr-1" />
+              Delete
+            </Button> */}
+          </div>
+        ) : (
+          <div className="flex flex-col md:flex-row gap-2 w-full">
+            <Button asChild variant="outline" size="sm" className="md:flex-1">
+              <Link href={`/properties/${id}`}>View Details</Link>
+            </Button>
+            <Button asChild size="sm" className="md:flex-1">
+              <Link href={`/appointments/schedule/${id}`}>
+                <Calendar className="w-4 h-4 mr-1" />
+                Schedule
+              </Link>
+            </Button>
+          </div>
+        )}
       </CardFooter>
     </Card>
   );

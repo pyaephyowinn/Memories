@@ -162,7 +162,7 @@ export function DashboardPage({
               </CardContent>
               <CardFooter>
                 <Button asChild variant="outline" size="sm">
-                  <Link href="/properties">View All Properties</Link>
+                  <Link href="/properties/my">View All Properties</Link>
                 </Button>
               </CardFooter>
             </Card>

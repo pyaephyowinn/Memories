@@ -92,7 +92,7 @@ export function NewAppointmentPage({
     <div className="mx-auto max-w-2xl space-y-6 container py-4 md:py-8">
       <div className="flex items-center gap-2">
         <Button asChild variant="ghost" size="icon">
-          <Link href={`/properties/1`}>
+          <Link href={`/properties/${propertyId}`}>
             <ArrowLeft className="h-4 w-4" />
             <span className="sr-only">Back to property</span>
           </Link>

@@ -137,6 +137,17 @@ export async function updateProperty(id: number, data: PropertyType) {
 }
 
 export async function deleteProperty(id: number) {
+  const session = await verifySession();
+  const owner = await prisma.owner.findUnique({
+    where: {
+      userId: session.userId,
+    },
+  });
+
+  if (!owner) {
+    throw new Error("Owner not found");
+  }
+
   return prisma.listing.delete({
     where: {
       id,
@@ -170,9 +181,25 @@ export async function getPropertiesByOwner() {
 
 export async function getDashboardProperties() {
   const session = await verifySession();
+  const owner = await prisma.owner.findUnique({
+    where: {
+      userId: session.userId,
+    },
+  });
+
+  if (!owner) {
+    throw new Error("Owner not found");
+  }
+
   const [properties, appointments] = await Promise.all([
     prisma.listing.findMany({
       take: 4,
+      where: {
+        ownerId: owner.id,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
     }),
     prisma.appointment.findMany({
       take: 4,
