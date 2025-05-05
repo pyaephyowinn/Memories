@@ -84,7 +84,7 @@ export async function getMe() {
   const session = await getSession();
 
   if (!session) {
-    throw new Error("Session not found");
+    return redirect("/login");
   }
 
   return prisma.user.findUnique({
