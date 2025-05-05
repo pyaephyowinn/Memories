@@ -2,12 +2,12 @@
 
 import prisma from "@/lib/prisma";
 import { AppointmentType } from "@/lib/schemas";
-import { getSession } from "@/lib/session";
+import { verifySession } from "@/lib/session";
 
 export async function createAppointment(
   data: Omit<AppointmentType, "hour"> & { listingId: number }
 ) {
-  const session = await getSession();
+  const session = await verifySession();
 
   if (!session) {
     throw new Error("Session not found");
@@ -26,8 +26,12 @@ export async function createAppointment(
     }),
   ]);
 
-  if (!customer || !listing) {
-    throw new Error("Customer or listing not found");
+  if (!customer) {
+    throw new Error("Owner cannot create appointment");
+  }
+
+  if (!listing) {
+    throw new Error("Listing not found");
   }
 
   return prisma.appointment.create({

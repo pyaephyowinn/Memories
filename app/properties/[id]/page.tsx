@@ -1,8 +1,13 @@
 import { getPropertyById } from "@/services/property";
 import { PropertyDetailPage } from "../components/PropertyDetailPage";
 
-export default async function page({ params }: { params: { id: string } }) {
-  const property = await getPropertyById(+params.id);
+export default async function page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const property = await getPropertyById(+id);
 
   if (!property) {
     return <div>Property not found</div>;
