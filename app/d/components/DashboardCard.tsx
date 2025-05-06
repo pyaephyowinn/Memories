@@ -11,9 +11,7 @@ type DashboardCardProps = {
   title: string;
   value: string;
   description: string;
-  trend: string;
   icon: React.ElementType;
-  trendUp: boolean;
 };
 
 export function DashboardCard({
@@ -21,8 +19,6 @@ export function DashboardCard({
   value,
   description,
   icon: Icon,
-  trend,
-  trendUp,
 }: DashboardCardProps) {
   return (
     <Card>
@@ -33,13 +29,6 @@ export function DashboardCard({
       <CardContent>
         <div className="text-2xl font-bold">{value}</div>
         <p className="text-xs text-muted-foreground">{description}</p>
-        <div
-          className={`mt-2 flex items-center text-xs ${
-            trendUp ? "text-green-500" : "text-red-500"
-          }`}
-        >
-          {trendUp ? "↑" : "↓"} {trend}
-        </div>
       </CardContent>
     </Card>
   );

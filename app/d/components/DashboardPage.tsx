@@ -9,6 +9,7 @@ import {
   DollarSign,
   CheckCircle,
   XCircle,
+  UserRound,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,6 +33,7 @@ import {
 import { formatDate } from "@/lib/date";
 import { Prisma } from "@prisma/client";
 import { DashboardCard } from "./DashboardCard";
+import { ProfileTab } from "./ProfileTab";
 
 type DashboardPageProps = {
   properties: Prisma.ListingGetPayload<{}>[];
@@ -70,40 +72,32 @@ export function DashboardPage({
             value="12"
             description="4 active listings"
             icon={Home}
-            trend="+2 this month"
-            trendUp={true}
           />
           <DashboardCard
             title="Appointments"
             value="8"
             description="3 pending requests"
             icon={Calendar}
-            trend="+5 this week"
-            trendUp={true}
-          />
-          <DashboardCard
-            title="Total Revenue"
-            value="$24,500"
-            description="From 3 transactions"
-            icon={DollarSign}
-            trend="+12% from last month"
-            trendUp={true}
           />
         </div>
 
-        <Tabs defaultValue="properties" className="space-y-4">
+        <Tabs defaultValue="appointments" className="space-y-4">
           <TabsList>
-            <TabsTrigger value="properties">
-              <Home className="mr-2 h-4 w-4" />
-              Properties
-            </TabsTrigger>
             <TabsTrigger value="appointments">
               <Calendar className="mr-2 h-4 w-4" />
               Appointments
             </TabsTrigger>
+            <TabsTrigger value="properties">
+              <Home className="mr-2 h-4 w-4" />
+              Properties
+            </TabsTrigger>
             <TabsTrigger value="transactions">
               <DollarSign className="mr-2 h-4 w-4" />
               Transactions
+            </TabsTrigger>
+            <TabsTrigger value="profile">
+              <UserRound className="mr-2 h-4 w-4" />
+              Profile
             </TabsTrigger>
           </TabsList>
 
@@ -340,6 +334,10 @@ export function DashboardPage({
                 </Button>
               </CardFooter>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="profile" className="space-y-4">
+            <ProfileTab />
           </TabsContent>
         </Tabs>
       </div>

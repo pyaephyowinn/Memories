@@ -3,6 +3,7 @@ import { HomeIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { decrypt } from "@/lib/session";
 import { cookies } from "next/headers";
+import { LogoutButton } from "./LogoutButton";
 
 export async function Header() {
   const cookie = (await cookies()).get("session")?.value;
@@ -24,12 +25,16 @@ export async function Header() {
         </Link>
 
         {session?.userId ? (
-          <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
-            href="/d"
-          >
-            Dashboard
-          </Link>
+          <>
+            <Link
+              className="text-sm font-medium hover:underline underline-offset-4"
+              href="/d"
+            >
+              Dashboard
+            </Link>
+
+            <LogoutButton />
+          </>
         ) : (
           <>
             <Link

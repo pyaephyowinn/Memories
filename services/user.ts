@@ -96,3 +96,19 @@ export async function getMe() {
     },
   });
 }
+
+export async function updateUser(data: { username?: string; phone?: string }) {
+  const session = await getSession();
+  if (!session) {
+    return redirect("/login");
+  }
+  const updatedUser = await prisma.user.update({
+    where: { id: session.userId },
+    data: {
+      ...(data.username && { username: data.username }),
+      ...(data.phone && { phone: data.phone }),
+    },
+  });
+  const { password: _, ...rest } = updatedUser;
+  return rest;
+}
