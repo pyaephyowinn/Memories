@@ -224,3 +224,40 @@ export async function getDashboardProperties() {
     appointments,
   };
 }
+
+export async function getCustomerDashboardProperties() {
+  const session = await verifySession();
+  const customer = await prisma.customer.findUnique({
+    where: {
+      userId: session.userId,
+    },
+  });
+
+  if (!customer) {
+    throw new Error("Customer not found");
+  }
+
+  const appointments = await prisma.appointment.findMany({
+    where: {
+      customerId: customer.id,
+    },
+    include: {
+      listing: {
+        include: {
+          owner: {
+            include: {
+              user: true,
+            },
+          },
+        },
+      },
+      customer: {
+        include: {
+          user: true,
+        },
+      },
+    },
+  });
+
+  return appointments;
+}

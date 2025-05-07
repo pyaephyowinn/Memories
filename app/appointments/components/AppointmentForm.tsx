@@ -186,7 +186,7 @@ export default function AppointmentForm({
                   <FormControl>
                     <Textarea
                       id="message"
-                      placeholder="Any specific questions or requirements for the viewing?"
+                      placeholder="Please leave location and any other information you think is relevant."
                       className="min-h-[100px]"
                       {...field}
                     />

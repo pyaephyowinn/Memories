@@ -4,9 +4,11 @@ import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { cache } from "react";
 import { redirect } from "next/navigation";
+import { RoleType } from "./configs";
 
 type SessionPayload = {
   userId: number;
+  role: RoleType;
   expiresAt: Date;
 };
 
@@ -32,9 +34,9 @@ export async function decrypt(session: string | undefined = "") {
   }
 }
 
-export async function createSession(userId: number) {
+export async function createSession(userId: number, role: RoleType) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-  const session = await encrypt({ userId, expiresAt });
+  const session = await encrypt({ userId, expiresAt, role });
   const cookieStore = await cookies();
 
   cookieStore.set("session", session, {

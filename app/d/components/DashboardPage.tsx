@@ -47,7 +47,7 @@ export function DashboardPage({
   appointments,
 }: DashboardPageProps) {
   return (
-    <main className="flex-1 py-6 md:py-10 container mx-auto">
+    <div className="flex-1 py-6 md:py-10 container mx-auto">
       <div className="flex flex-col gap-6">
         <div className="flex flex-col md:flex-row justify-between gap-4">
           <div>
@@ -178,6 +178,7 @@ export function DashboardPage({
                       <TableHead>Property</TableHead>
                       <TableHead>Date & Time</TableHead>
                       <TableHead>Status</TableHead>
+                      <TableHead>Message (location)</TableHead>
                       <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -206,6 +207,7 @@ export function DashboardPage({
                               : "Declined"}
                           </Badge>
                         </TableCell>
+                        <TableCell>{appointment.message}</TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
                             {appointment.status === "pending" && (
@@ -341,6 +343,6 @@ export function DashboardPage({
           </TabsContent>
         </Tabs>
       </div>
-    </main>
+    </div>
   );
 }
