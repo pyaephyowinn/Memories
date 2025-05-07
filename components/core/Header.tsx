@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { decrypt } from "@/lib/session";
 import { cookies } from "next/headers";
 import { LogoutButton } from "./LogoutButton";
+import { Roles } from "@/lib/configs";
 
 export async function Header() {
   const cookie = (await cookies()).get("session")?.value;
@@ -28,7 +29,7 @@ export async function Header() {
           <>
             <Link
               className="text-sm font-medium hover:underline underline-offset-4"
-              href="/d"
+              href={session?.role === Roles.customer ? "/p" : "/d"}
             >
               Dashboard
             </Link>
